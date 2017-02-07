@@ -5,11 +5,14 @@ using UnityEngine;
 public class HartoTuningController : MonoBehaviour {
 
 	//	Public variables
+	public bool HARTOisActive;
 	public float movespeed = 5.0f;
 	public float currentfrequency;
 	public float frequencyincrement = 5.0f;
 	public KeyCode increasefrequency = KeyCode.Alpha1;
 	public KeyCode decreasefrequency = KeyCode.Alpha2;
+	public KeyCode activateHARTO = KeyCode.Tab;
+
 
 	//	Private variables
 	private Transform _transform;
@@ -18,6 +21,7 @@ public class HartoTuningController : MonoBehaviour {
 	void Start () {
 		_transform = GameObject.FindGameObjectWithTag ("HartoKnob").transform;
 		currentfrequency = _transform.localRotation.eulerAngles.y;
+		HARTOisActive = false;
 	}
 		
 	// Update is called once per frame
@@ -35,6 +39,21 @@ public class HartoTuningController : MonoBehaviour {
 				currentfrequency = -135.0f;
 			}
 			_transform.localRotation = Quaternion.Euler (0, currentfrequency, 0);
+		}
+
+		if (Input.GetKey(activateHARTO)) {
+			HARTOisActive = !HARTOisActive;
+			toggleHARTO (HARTOisActive);
+		}
+			
+	}
+
+	void toggleHARTO (bool b){
+		if (b) {
+			
+		}
+		else {
+			
 		}
 	}
 
