@@ -30,6 +30,8 @@ public class ThirdPersonController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (GameManager.gm.thirdPersonActive) {
+
 		float x = Input.GetAxis ("Horizontal");
 		float z = Input.GetAxis ("Vertical");
 		zoomvalue += Input.GetAxis ("Mouse ScrollWheel");
@@ -48,6 +50,7 @@ public class ThirdPersonController : MonoBehaviour {
 		}
 			
 		zoomCamera (zoomvalue);
+	}
 	}
 
 	void zoomCamera(float camerazoom) {
