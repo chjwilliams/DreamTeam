@@ -1,21 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
-/***************************************************************************************************/
+/*-------------------------------------------------------------------------------------------------*/
 /*       Gamemanager: control camera switch                                                        */
 /*                  start();                                                                       */
 /*                  update();                                                                      */
 /*                  toggleCamera();                                                                */
 /*                                                                                                 */
-/***************************************************************************************************/
+/*-------------------------------------------------------------------------------------------------*/
 public class GameManager : MonoBehaviour {
 
 	//    Public Variables
 	public static GameManager gm;					//Refernece to  the gamemanager
 
+
+
 	public GameObject firstPersonCamera;			//Refernece to  the firstpersoncamera
 	public GameObject thirdPersonCamera;			//Refernece to  the thirdpersoncamera
+	public FirstPersonController astrid;
+	public BasicNPCController mali;
 
 	public bool thirdPersonActive;					////Refernece to whether the thirdpersoncamera is active
 
@@ -26,6 +31,10 @@ public class GameManager : MonoBehaviour {
 		if (gm == null) {
 			gm = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager> ();  
 		}
+
+		mali = GameObject.Find ("Mali").GetComponent<BasicNPCController>();
+		astrid = GameObject.Find ("Astrid").GetComponent<FirstPersonController> ();
+
 
 		//initial thirdpersoncamera inactive
 		thirdPersonActive = false;
@@ -43,6 +52,8 @@ public class GameManager : MonoBehaviour {
 			toggleCamera (thirdPersonActive);
 		}
 	}
+
+
 
 	//the function we set the active/inactive of firstperson and thirdperson camera
 	void toggleCamera(bool b){
