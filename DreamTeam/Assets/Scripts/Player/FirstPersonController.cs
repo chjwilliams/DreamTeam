@@ -274,5 +274,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				}
 			}
 		}
+
+        public void setTalking (bool b) {
+            m_IsTalking = b;
+        }
     }
 }

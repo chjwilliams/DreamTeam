@@ -149,11 +149,13 @@ public class DialougeManager : MonoBehaviour {
 		playVoiceOver ("Astrid VO1repeated_Gib", 0.2f);
 		playVoiceOver ("Astrid VO1_HARTO", 1.3f);
 				
-		yield return new WaitForSeconds(3.0f);
+		yield return new WaitForSeconds(2.0f);
 		
 		//	Mali's dialogue
 		playVoiceOver ("Mali VO1_Gib", 0.2f);
 		playVoiceOver ("Mali VO1_HARTO", 1.3f);
+
+		yield return new WaitForSeconds(8.0f);
 
 		harto.setHARTOActiveTo(true, false, true);
 		
@@ -162,83 +164,75 @@ public class DialougeManager : MonoBehaviour {
 		
 		if(harto.isHappy){
 			playVoiceOver("Astrid VO2_Happy_HARTO", 1.3f);
-			playVoiceOver("Astrid VO2_Happy_Gib", 0.2f);
+			playVoiceOver("Astrid VO2_Happy_Gib", 0.5f);
 
-			yield return new WaitForSeconds(3.0f);
+			yield return new WaitForSeconds(5.0f);
 
 			playVoiceOver("Mali VO2_Happy_HARTO", 1.3f);
-			playVoiceOver("Mali VO2_Happy_Gib", 0.2f);
+			playVoiceOver("Mali VO2_Happy_Gib", 0.5f);
 		}
 		else if (harto.isCurious) {
 			playVoiceOver("Astrid VO2_Curious_HARTO", 1.3f);
-			playVoiceOver("Astrid VO2_Curious_Gib", 0.2f);
+			playVoiceOver("Astrid VO2_Curious_Gib", 0.5f);
 
-			yield return new WaitForSeconds(3.0f);
+			yield return new WaitForSeconds(2.0f);
 
 			playVoiceOver("Mali VO2_Curious_HARTO", 1.3f);
-			playVoiceOver("Mali VO2_Curious_Gib", 0.2f);
+			playVoiceOver("Mali VO2_Curious_Gib", 0.5f);
 		}
 		else if (harto.isSad) {
 			playVoiceOver("Astrid VO2_Sad_HARTO", 1.3f);
-			playVoiceOver("Astrid VO2_Sad_Gib", 0.2f);
+			playVoiceOver("Astrid VO2_Sad_Gib", 0.5f);
 
-			yield return new WaitForSeconds(3.0f);
+			yield return new WaitForSeconds(4.0f);
 
 			playVoiceOver("Mali VO2_Sad_HARTO", 1.3f);
-			playVoiceOver("Mali VO2_Sad_Gib", 0.2f);
-		}
-
-		if(harto.isHappy){
-			
-		}
-		else if (harto.isCurious) {
-			
-		}
-		else if (harto.isSad) {
-			
+			playVoiceOver("Mali VO2_Sad_Gib", 0.5f);
 		}
 
 		//	sets all emotions to false
 		harto.defaultHARTOEmotions();
 
-		yield return new WaitForSeconds(3.0f);
+		yield return new WaitForSeconds(10.0f);
 
 		playVoiceOver("Mali VO3_HARTO", 1.3f);
-		playVoiceOver("Mali VO3_Gib", 0.2f);
+		playVoiceOver("Mali VO3_Gib", 0.5f);
 
-		yield return new WaitForSeconds(5.0f);
+		yield return new WaitForSeconds(30.0f);
 		
-		playVoiceOver("Astird VO3_HARTO", 1.3f);
-		playVoiceOver("Astrid VO3_Gib", 0.2f);
+		playVoiceOver("Astrid VO3_HARTO", 1.3f);
+		playVoiceOver("Astrid VO3_Gib", 0.5f);
 
-		yield return new WaitForSeconds(5.0f);
+		yield return new WaitForSeconds(3.0f);
 
 		playVoiceOver("Mali VO4_HARTO", 1.3f);
-		playVoiceOver("Mali VO4_Gib", 0.2f);
+		playVoiceOver("Mali VO4_Gib", 0.5f);
 
-		yield return new WaitForSeconds(5.0f);
+		yield return new WaitForSeconds(32.0f);
 		
-		playVoiceOver("Astird VO4_HARTO", 1.3f);
-		playVoiceOver("Astrid VO4_Gib", 0.2f);
+		playVoiceOver("Astrid VO4_HARTO", 1.3f);
+		playVoiceOver("Astrid VO4_Gib", 0.5f);
 
-		yield return new WaitForSeconds(5.0f);
+		yield return new WaitForSeconds(6.0f);
 
 		playVoiceOver("Mali VO5_HARTO", 1.3f);
-		playVoiceOver("Mali VO5_Gib", 0.2f);
+		playVoiceOver("Mali VO5_Gib", 0.5f);
 
 		yield return new WaitForSeconds(5.0f);
 		
-		playVoiceOver("Astird VO5_HARTO", 1.3f);
-		playVoiceOver("Astrid VO5_Gib", 0.2f);
+		playVoiceOver("Astrid VO5_HARTO", 1.3f);
+		playVoiceOver("Astrid VO5_Gib", 0.5f);
 
-		yield return new WaitForSeconds(5.0f);
+		yield return new WaitForSeconds(8.0f);
 		
 		playVoiceOver("Astrid VO6_Gib", 0.5f);
 
-		yield return new WaitForSeconds(5.0f);
+		yield return new WaitForSeconds(4.0f);
 
 		playVoiceOver("Mali VO7_HARTO", 1.3f);
-		playVoiceOver("Mali VO7_Gib", 0.2f);
+		playVoiceOver("Mali VO7_Gib", 0.5f);
+
+		astrid.setTalking(false);
 	}
 	
 
