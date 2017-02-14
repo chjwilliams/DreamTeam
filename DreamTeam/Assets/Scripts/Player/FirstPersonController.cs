@@ -67,7 +67,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-			if (!GameManager.gm.thirdPersonActive) {
+			if (!GameManager.gm.thirdPersonActive && !GameManager.gm.disableInput) {
 				RotateView ();
 				// the jump state needs to read here to make sure it is not missed
 				if (!m_Jump && !m_IsTalking) {
@@ -98,7 +98,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-			if (!GameManager.gm.thirdPersonActive) {
+			if (!GameManager.gm.thirdPersonActive &&  !GameManager.gm.disableInput) {
 				
 				float speed;
 			
@@ -249,22 +249,25 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            Rigidbody body = hit.collider.attachedRigidbody;
-            //dont move the rigidbody if the character is on top of it
-            if (m_CollisionFlags == CollisionFlags.Below)
+            if (!GameManager.gm.disableInput)
             {
-                return;
-            }
+                Rigidbody body = hit.collider.attachedRigidbody;
+              //dont move the rigidbody if the character is on top of it
+                if (m_CollisionFlags == CollisionFlags.Below)
+                {
+                    return;
+                }
 
-            if (body == null || body.isKinematic)
-            {
-                return;
+                if (body == null || body.isKinematic)
+                {
+                    return;
+                }
+                body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
             }
-            body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
 
 		private void OnTriggerStay(Collider other) {
-			if (other.gameObject.CompareTag ("NPC")) {
+			if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) {
 				if (Input.GetKeyDown(m_Speak) && !m_IsTalking) {
 					m_IsTalking = true;
 					StartCoroutine(DialougeManager.instance.initDialogue(other.name));
