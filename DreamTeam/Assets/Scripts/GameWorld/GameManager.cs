@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour {
 		//initial thirdpersoncamera inactive
 		thirdPersonActive = false;
 		
-		disableInput = true;
+		disableInput = false;
 
 	}
 
