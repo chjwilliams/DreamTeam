@@ -147,12 +147,14 @@ public class DialougeManager : MonoBehaviour {
 		yield return StartCoroutine(waitForRightFrequency());
 			
 		playVoiceOver ("Astrid VO1repeated_Gib", 0.2f);
+		yield return new WaitForSeconds(2.0f);
 		playVoiceOver ("Astrid VO1_HARTO", 1.3f);
 				
 		yield return new WaitForSeconds(2.0f);
 		
 		//	Mali's dialogue
 		playVoiceOver ("Mali VO1_Gib", 0.2f);
+		yield return new WaitForSeconds(2.0f);
 		playVoiceOver ("Mali VO1_HARTO", 1.3f);
 
 		yield return new WaitForSeconds(8.0f);
@@ -163,8 +165,9 @@ public class DialougeManager : MonoBehaviour {
 		yield return StartCoroutine(waitForEmotionalInput());
 		
 		if(harto.isHappy){
-			playVoiceOver("Astrid VO2_Happy_HARTO", 1.3f);
 			playVoiceOver("Astrid VO2_Happy_Gib", 0.5f);
+			yield return new WaitForSeconds(2.0f);
+			playVoiceOver("Astrid VO2_Happy_HARTO", 1.3f);
 
 			yield return new WaitForSeconds(5.0f);
 

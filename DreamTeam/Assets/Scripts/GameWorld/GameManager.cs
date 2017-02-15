@@ -5,6 +5,36 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*
+
+		//	Gibberish first then HARTO dialogue
+		//	Store dialouge on HARTO
+		//	One big Dial two options: When in conversation rotary wheel for emotions. Not in conversation: Scroll through recordings
+		//	Make player look up
+		//	Emotion options 
+
+		//	Look at ways to tune things
+			Lock picking
+			power measure
+			Hit button in the window
+		
+		//	HARTO v1
+			Emotion scroll wheel.
+		
+		//	HARTO v2
+			Tune to atmosphere
+
+		//	HARTO v3
+			combine 1 and 2
+
+		//	HARTO v4
+			Master tune then fine tune throughout the day
+
+
+		//	Navigating dialouge like a node tree
+
+ */
+
 /*-------------------------------------------------------------------------------------------------*/
 /*                                                                                                 */
 /*       Gamemanager: Manages state of the game                                                    */
