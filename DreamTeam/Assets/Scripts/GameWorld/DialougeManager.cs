@@ -30,14 +30,14 @@ public class DialougeManager : MonoBehaviour {
 			astrid = GameObject.Find ("Astrid").GetComponent<FirstPersonController>();
 		}
 
-		if (harto == null) {
-			harto = GameObject.Find ("TemporaryHARTO").GetComponent<HartoTuningController>();
-		}
+		// if (harto == null) {
+		// 	harto = GameObject.Find ("TemporaryHARTO").GetComponent<HartoTuningController>();
+		// }
 
 		dialogue = new Dictionary<string, AudioClip> ();
 
 		audioSource = GetComponent<AudioSource> ();
-		hartoAudioSource = harto.GetComponent<AudioSource> ();
+		//hartoAudioSource = harto.GetComponent<AudioSource> ();
 
 		
 
@@ -141,7 +141,7 @@ public class DialougeManager : MonoBehaviour {
 
 		GameManager.gm.mali.startGestureAnimation();	
 		if (GameManager.gm.mali.gestureAnimationDone){
-				harto.setHARTOActiveTo(true, true,false);
+				//harto.setHARTOActiveTo(true, true,false);
 		}
 		//	Wait for user input
 		yield return StartCoroutine(waitForRightFrequency());
@@ -159,42 +159,42 @@ public class DialougeManager : MonoBehaviour {
 
 		yield return new WaitForSeconds(8.0f);
 
-		harto.setHARTOActiveTo(true, false, true);
+		//harto.setHARTOActiveTo(true, false, true);
 		
 		//	Wait for input
 		yield return StartCoroutine(waitForEmotionalInput());
 		
-		if(harto.isHappy){
-			playVoiceOver("Astrid VO2_Happy_Gib", 0.5f);
-			yield return new WaitForSeconds(2.0f);
-			playVoiceOver("Astrid VO2_Happy_HARTO", 1.3f);
+		// if(harto.isHappy){
+		// 	playVoiceOver("Astrid VO2_Happy_Gib", 0.5f);
+		// 	yield return new WaitForSeconds(2.0f);
+		// 	playVoiceOver("Astrid VO2_Happy_HARTO", 1.3f);
 
-			yield return new WaitForSeconds(5.0f);
+		// 	yield return new WaitForSeconds(5.0f);
 
-			playVoiceOver("Mali VO2_Happy_HARTO", 1.3f);
-			playVoiceOver("Mali VO2_Happy_Gib", 0.5f);
-		}
-		else if (harto.isCurious) {
-			playVoiceOver("Astrid VO2_Curious_HARTO", 1.3f);
-			playVoiceOver("Astrid VO2_Curious_Gib", 0.5f);
+		// 	playVoiceOver("Mali VO2_Happy_HARTO", 1.3f);
+		// 	playVoiceOver("Mali VO2_Happy_Gib", 0.5f);
+		// }
+		// else if (harto.isCurious) {
+		// 	playVoiceOver("Astrid VO2_Curious_HARTO", 1.3f);
+		// 	playVoiceOver("Astrid VO2_Curious_Gib", 0.5f);
 
-			yield return new WaitForSeconds(2.0f);
+		// 	yield return new WaitForSeconds(2.0f);
 
-			playVoiceOver("Mali VO2_Curious_HARTO", 1.3f);
-			playVoiceOver("Mali VO2_Curious_Gib", 0.5f);
-		}
-		else if (harto.isSad) {
-			playVoiceOver("Astrid VO2_Sad_HARTO", 1.3f);
-			playVoiceOver("Astrid VO2_Sad_Gib", 0.5f);
+		// 	playVoiceOver("Mali VO2_Curious_HARTO", 1.3f);
+		// 	playVoiceOver("Mali VO2_Curious_Gib", 0.5f);
+		// }
+		// else if (harto.isSad) {
+		// 	playVoiceOver("Astrid VO2_Sad_HARTO", 1.3f);
+		// 	playVoiceOver("Astrid VO2_Sad_Gib", 0.5f);
 
-			yield return new WaitForSeconds(4.0f);
+		// 	yield return new WaitForSeconds(4.0f);
 
-			playVoiceOver("Mali VO2_Sad_HARTO", 1.3f);
-			playVoiceOver("Mali VO2_Sad_Gib", 0.5f);
-		}
+		// 	playVoiceOver("Mali VO2_Sad_HARTO", 1.3f);
+		// 	playVoiceOver("Mali VO2_Sad_Gib", 0.5f);
+		// }
 
 		//	sets all emotions to false
-		harto.defaultHARTOEmotions();
+		//harto.defaultHARTOEmotions();
 
 		yield return new WaitForSeconds(10.0f);
 

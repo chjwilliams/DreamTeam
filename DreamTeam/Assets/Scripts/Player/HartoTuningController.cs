@@ -90,9 +90,9 @@ public class HartoTuningController : MonoBehaviour {
 														_meshRenderer.material.color.a);
 		
 		//	HARTO functionality turned off until activated in Prototype
-		m_CanUseHARTO = false;
-     	m_CanEmoteHARTO = false;
-     	m_CanTuneHARTO =  false;
+		m_CanUseHARTO = true;
+     	m_CanEmoteHARTO = true;
+     	m_CanTuneHARTO =  true;
 
 		//	Defeaults all emotions to off
 		defaultHARTOEmotions();

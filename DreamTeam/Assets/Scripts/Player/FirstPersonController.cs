@@ -267,12 +267,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 		private void OnTriggerStay(Collider other) {
-			if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) {
-				if (Input.GetKeyDown(m_Speak) && !m_IsTalking) {
-					m_IsTalking = true;
-					StartCoroutine(DialougeManager.instance.initDialogue(other.name));
-				}
-			}
+			// if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) {
+			// 	if (Input.GetKeyDown(m_Speak) && !m_IsTalking) {
+			// 		m_IsTalking = true;
+			// 		StartCoroutine(DialougeManager.instance.initDialogue(other.name));
+			// 	}
+			// }
 		}
 
         public void setTalking (bool b) {

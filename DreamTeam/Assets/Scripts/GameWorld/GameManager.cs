@@ -53,10 +53,16 @@ public class GameManager : MonoBehaviour {
 	public bool thirdPersonActive;						//	Refernece to whether the thirdpersoncamera is active
 	public KeyCode restartScene = KeyCode.Alpha0;		//	Restarts the scene
 	public KeyCode switchCameras = KeyCode.LeftShift;	//	Switches between cameras
+	public KeyCode hartoV1 = KeyCode.Alpha7;
+	public KeyCode hartoV2 = KeyCode.Alpha9;
+	public KeyCode hartoV3 = KeyCode.Alpha8;
 	public FirstPersonController astrid;				//	Reference to player character
 	public BasicNPCController mali;						//	Reference to Mali
 	public GameObject firstPersonCamera;				//	Refernece to  the firstpersoncamera
 	public GameObject thirdPersonCamera;				//	Refernece to  the thirdpersoncamera
+	public GameObject hartoV1GO;
+	public GameObject hartoV2GO;
+	public GameObject hartoV3GO;
 
 
 	//	Private Variables
@@ -82,6 +88,13 @@ public class GameManager : MonoBehaviour {
 		
 		disableInput = false;
 
+		hartoV1GO = GameObject.Find("TemporaryHARTO");
+		hartoV2GO = GameObject.Find("HARTOv2");
+		hartoV3GO = GameObject.Find("HARTOv3");
+
+		hartoV1GO.SetActive(true);
+		hartoV2GO.SetActive(false);
+		hartoV3GO.SetActive(false);
 	}
 
 	
@@ -105,6 +118,25 @@ public class GameManager : MonoBehaviour {
 		{
 			Scene scene = SceneManager.GetActiveScene();
         	SceneManager.LoadScene(scene.name);
+		}
+
+		if (Input.GetKeyDown(hartoV1))
+		{
+			hartoV1GO.SetActive(true);
+			hartoV2GO.SetActive(false);
+			hartoV3GO.SetActive(false);
+		}
+		else if (Input.GetKeyDown(hartoV2))
+		{
+			hartoV1GO.SetActive(false);
+			hartoV2GO.SetActive(true);
+			hartoV3GO.SetActive(false);
+		}
+		else if (Input.GetKeyDown(hartoV3))
+		{
+			hartoV1GO.SetActive(false);
+			hartoV2GO.SetActive(false);
+			hartoV3GO.SetActive(true);
 		}
 	}
 
