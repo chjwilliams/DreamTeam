@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HARTOParticleManager : MonoBehaviour 
 {
-	private float cycleInterval = 0.01f;					//	increase to make force greater
+	public float cycleInterval = 0.007f;					//	increase to make force greater
 	private List<HARTODisplayParticle> hartoParticles;
 	private List<MovingBrocaParticle> brocaParticles;
 
