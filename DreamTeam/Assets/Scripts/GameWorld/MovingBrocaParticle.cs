@@ -12,6 +12,7 @@ public class MovingBrocaParticle : HARTODisplayParticle
 		rb = gameObject.AddComponent<Rigidbody>();
 		rb.mass = mass;
 		rb.useGravity = false;
+		rb.constraints = RigidbodyConstraints.FreezePositionX;
 	}
 	
 	// Update is called once per frame
