@@ -5,12 +5,25 @@ using UnityEngine;
 public class HARTOParticleManager : MonoBehaviour 
 {
 	public float cycleInterval = 0.007f;					//	increase to make force greater
+
+	public float moveSpeed = 5.0f;
+	public KeyCode upKey = KeyCode.UpArrow;			//	Input for moving up
+	public KeyCode downKey = KeyCode.DownArrow;			//	Input for moving down
+	public KeyCode rightKey = KeyCode.RightArrow;		//	Input for moving right
+	public KeyCode leftKey = KeyCode.LeftArrow;			//	Input for moving left
+
+
+	public const string HORIZONTAL = "Horizontal";
+	public const string VERTICAL = "Vertical";
+	public GameObject hartoNode;
+
 	private List<HARTODisplayParticle> hartoParticles;
 	private List<MovingBrocaParticle> brocaParticles;
 
 	// Use this for initialization
 	void Start () 
 	{
+		hartoNode = GameObject.FindGameObjectWithTag("HARTONode");
 		hartoParticles = new List<HARTODisplayParticle>(FindObjectsOfType<HARTODisplayParticle>());
 		brocaParticles = new List<MovingBrocaParticle>(FindObjectsOfType<MovingBrocaParticle>());
 
@@ -66,7 +79,83 @@ public class HARTOParticleManager : MonoBehaviour
 	}
 	
 	// Update is called once per frame
+	void Move(float dx, float dy)
+	{
+		//GetComponent<Rigidbody>().AddForce(new Vector3(0, dy * moveSpeed * Time.deltaTime, dx * moveSpeed * Time.deltaTime));
+	}
+
+	void MoveNode(KeyCode key)
+	{
+		if (Input.GetKey(rightKey))
+		{
+			transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+		}
+		else if (Input.GetKey(leftKey))
+		{
+			transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+		}
+
+		if (Input.GetKey(upKey))
+		{
+			transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+		}
+		else if (Input.GetKey(downKey))
+		{
+			transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+		}
+	}
+
+	// Update is called once per frame
 	void Update () {
-		
+		if (CompareTag("HARTONode"))
+		{
+			float x = Input.GetAxis(HORIZONTAL);
+			float y = Input.GetAxis(VERTICAL);
+			//Move(-x, y);
+			MoveNode(rightKey);
+			MoveNode(leftKey);
+			MoveNode(upKey);
+			MoveNode(downKey);
+			
+		}
+	}
+
+
+	void OnTriggerExit(Collider other)
+	{
+		if (CompareTag("HARTONode"))
+		{
+			if (other.CompareTag("Attract"))
+			{
+				foreach (MovingBrocaParticle brocaParticle in brocaParticles)
+				{
+					brocaParticle.rb.constraints = RigidbodyConstraints.FreezePositionX;
+				}
+			}
+
+			if (other.CompareTag("Repel"))
+			{
+				hartoNode.GetComponent<HARTODisplayParticle>().charge = -15;
+			}
+		}
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (CompareTag("HARTONode"))
+		{
+			if (other.CompareTag("Attract"))
+			{
+				foreach (MovingBrocaParticle brocaParticle in brocaParticles)
+				{
+					brocaParticle.rb.constraints = RigidbodyConstraints.None;
+				}
+			}
+
+			if (other.CompareTag("Repel"))
+			{
+				hartoNode.GetComponent<HARTODisplayParticle>().charge = 1;
+			}
+		}
 	}
 }

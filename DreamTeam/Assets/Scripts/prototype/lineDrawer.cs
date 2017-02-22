@@ -29,11 +29,11 @@ public class lineDrawer : MonoBehaviour {
 
 		}
 
-			if (Input.GetMouseButton(0)){
-				i ++;
-				line.SetVertexCount(i);
-				line.SetPosition(i - 1, Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 15)));
-			}
+		if (Input.GetMouseButton(0)){
+			i ++;
+			line.SetVertexCount(i);
+			line.SetPosition(i - 1, Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 15)));
+		}
 		
 	}
 }

@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour {
 		//initial thirdpersoncamera inactive
 		thirdPersonActive = false;
 		
-		disableInput = false;
+		disableInput = true;
 
 		hartoV1GO = GameObject.Find("TemporaryHARTO");
 		hartoV2GO = GameObject.Find("HARTOv2");
