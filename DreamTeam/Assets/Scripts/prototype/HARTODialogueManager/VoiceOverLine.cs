@@ -15,13 +15,23 @@ public class VoiceOverLine : MonoBehaviour
 
 	public AudioClip LoadAudioClip(string npcName, string dialogueType, string filename, bool emotionalResponse)
 	{
+		if (Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType) == null)
+		{
+			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + " not found!");
+		}
+
 		voiceOver = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType);
 
 		return voiceOver;
 	}
 	public AudioClip LoadAudioClip(string npcName, string dialogueType, string filename)
 	{
-		voiceOver = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename);
+		if (Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType) == null)
+		{
+			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + " not found!");
+		}
+
+		voiceOver = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType);
 
 		return voiceOver;
 	}

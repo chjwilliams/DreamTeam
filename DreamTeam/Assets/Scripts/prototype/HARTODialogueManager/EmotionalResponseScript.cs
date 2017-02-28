@@ -12,7 +12,9 @@ public class EmotionalResponseScript : ResponseScript {
 	// Use this for initialization
 	void Start () 
 	{
+		base.Start();	
 		astridHARTO = GameObject.FindGameObjectWithTag(HARTO_REF).GetComponent<HARTO>();
+		possibleLines = GetComponentsInChildren<VoiceOverLine>();
 	}
 
 	override public void PlayLine(HARTO.Emotions myEmotion)

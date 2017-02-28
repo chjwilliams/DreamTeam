@@ -7,19 +7,24 @@ public class ResponseScript : MonoBehaviour {
 	[Range(0.0f, 1.0f)]
 	public float volume = 1.0f;
 	
+	public float elapsedSeconds;
 	public VoiceOverLine myLine;
 
+	public AudioSource characterAudioSource;
 	public string characterName;
 
 	// Use this for initialization
-	void Start () 
+	protected void Start () 
 	{
+		characterAudioSource = GetComponentInParent<AudioSource>();
 		characterName = transform.parent.name;
+		myLine = GetComponentInChildren<VoiceOverLine>();
 	}
 
 	virtual public void PlayLine()
 	{
-		myLine.LoadAudioClip(characterName, "HARTO", transform.name);
+		characterAudioSource.PlayOneShot(myLine.LoadAudioClip(characterName, "HARTO", transform.name), volume);
+		elapsedSeconds = myLine.LoadAudioClip(characterName, "HARTO", transform.name).length;
 	}
 
 	virtual public void PlayLine(HARTO.Emotions myEmotion)
