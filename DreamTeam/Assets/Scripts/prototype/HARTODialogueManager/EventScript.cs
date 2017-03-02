@@ -94,6 +94,7 @@ public class EventScript : MonoBehaviour
 		while(totalLines < totalResponses)
 		{
 			float t = 0.0f;
+			totalLines++;
 
 			//	Redundant check (the first time)
 			if (response.transform.childCount > 1)
@@ -164,7 +165,7 @@ public class EventScript : MonoBehaviour
 				astridLines++;
 				Debug.Log("Astrid line Increases to " + astridLines);
 			}
-			totalLines++;
+			
 		}
 		yield return null;
 	}
