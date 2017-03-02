@@ -27,7 +27,7 @@ public class ResponseScript : MonoBehaviour {
 		elapsedSeconds = myLine.LoadAudioClip(characterName, "HARTO", transform.name).length;
 	}
 
-	virtual public void PlayLine(HARTO.Emotions myEmotion)
+	virtual public void PlayLine(Emotions myEmotion)
 	{
 	}
 	

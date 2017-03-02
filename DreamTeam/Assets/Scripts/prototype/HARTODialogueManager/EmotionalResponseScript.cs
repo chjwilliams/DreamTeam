@@ -5,6 +5,7 @@ using UnityEngine;
 public class EmotionalResponseScript : ResponseScript {
 
 	private const string HARTO_REF = "HARTO";
+	private const string DELIMITER = "Line_";
 	private HARTO astridHARTO;
 
 	public VoiceOverLine[] possibleLines;
@@ -17,9 +18,20 @@ public class EmotionalResponseScript : ResponseScript {
 		possibleLines = GetComponentsInChildren<VoiceOverLine>();
 	}
 
-	override public void PlayLine(HARTO.Emotions myEmotion)
+	public Emotions GetEmotionalInput()
 	{
-		myLine.LoadAudioClip(characterName, "HARTO", transform.name, true);
+		return astridHARTO.CurrentEmotion;
 	}
-	
+
+	public void PlayEmotionLine(Emotions emotion)
+	{		
+		for (int i  = 0; i < possibleLines.Length; i++)
+		{
+			if (possibleLines[i].name.Contains(emotion.ToString()))
+			{	
+				characterAudioSource.PlayOneShot(possibleLines[i].LoadAudioClip(characterName, "HARTO", transform.name, emotion.ToString()), volume);
+				elapsedSeconds = myLine.LoadAudioClip(characterName, "HARTO", transform.name, emotion.ToString()).length;
+			}
+		}	
+	}
 }
