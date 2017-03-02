@@ -103,6 +103,7 @@ public class EventScript : MonoBehaviour
 				waitingForEmotionalInput = true;
 			}
 
+			//	Checks if response needs to wiat for emotional input
 			while(astridHARTO.CurrentEmotion.ToString() == NO_EMOTION_SELECTED && response.transform.childCount > 1)
 			{
 				yield return new WaitForFixedUpdate();
@@ -126,11 +127,11 @@ public class EventScript : MonoBehaviour
 			// 		t += Time.deltaTime;
 			// }
 
-			//	Checks if response needs to wiat for emotional input
-
-
-			//	Waits for this line to be done beofre loading and playing the next line
-			
+			//	Breaks out of while loop when we finished all the reponses.			
+			if (totalLines == totalResponses)
+			{
+				break;
+			}
 
 			//	Checks who spoke last. If it was Astrid, play NPC dialouge.
 			if (response.characterName == PLAYER_ASTRID)
