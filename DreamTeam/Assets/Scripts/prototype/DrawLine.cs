@@ -112,7 +112,7 @@ public class DrawLine : MonoBehaviour
 		if (!solved) {
 
 
-			if (puzzleToggle) {
+			if (puzzleToggle) { //color
 				//	Connects mose position on screen to game screen
 				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 
@@ -127,16 +127,6 @@ public class DrawLine : MonoBehaviour
 							lineRenderer.startColor = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
 							lineRenderer.endColor = new Color (0, 0, 0, 0);
 						}	
-					}
-
-					if (hit.collider.tag == HARTO_NODE) {
-						for (int i = 0; i < nodes.Count; i++) {
-							if (hit.collider.transform.gameObject.GetInstanceID () == nodes [i].GetInstanceID ()) {
-								if (!audios [i].isPlaying) {
-									audios [i].PlayOneShot (audios [i].clip);
-								}
-							}
-						}
 					}
 				}
 
