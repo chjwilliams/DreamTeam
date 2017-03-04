@@ -56,6 +56,9 @@ public class DrawLine : MonoBehaviour
 	private AudioSource[] audios;
 
 	public float boundaryY;
+
+	private int audioCount;
+	private bool[] audioCheck;
 	
 	/*--------------------------------------------------------------------------------------*/
     /*																						*/
@@ -81,7 +84,9 @@ public class DrawLine : MonoBehaviour
 		audios [2] = audiomanager.E;
 		audios [3] = audiomanager.F;
 		audios [4] = audiomanager.G;
-		shuffleAudios (audios);
+
+		audioCheck = new bool[audios.Length];
+		//shuffleAudios (audios);
 
 		if (puzzleToggle) {
 			shuffleMaterials (materials);
@@ -125,7 +130,7 @@ public class DrawLine : MonoBehaviour
 					}
 
 					if (hit.collider.tag == HARTO_NODE) {
-						for(int i = 0; i < nodes.Count; i++){
+						for (int i = 0; i < nodes.Count; i++) {
 							if (hit.collider.transform.gameObject.GetInstanceID () == nodes [i].GetInstanceID ()) {
 								if (!audios [i].isPlaying) {
 									audios [i].PlayOneShot (audios [i].clip);
@@ -139,10 +144,10 @@ public class DrawLine : MonoBehaviour
 				if (Input.GetKey (KeyCode.Mouse0) && drawingLine) {			
 					if (Physics.Raycast (ray, out hit)) {
 						if (hit.collider.tag == HARTO_NODE) {
-							if (hit.collider.transform.gameObject.GetInstanceID () != usedNodes[usedNodes.Count-1].GetInstanceID ()) {
+							if (hit.collider.transform.gameObject.GetInstanceID () != usedNodes [usedNodes.Count - 1].GetInstanceID ()) {
 
 								lineRenderer.endColor = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
-						//	if (!usedNodes.Contains (hit.collider.transform.gameObject)) {
+								//	if (!usedNodes.Contains (hit.collider.transform.gameObject)) {
 								usedNodes.Add (hit.collider.transform.gameObject);
 								//finish drawing the previous line
 								lineRenderer.SetPosition (1, usedNodes [usedNodes.Count - 1].transform.position);
@@ -151,7 +156,7 @@ public class DrawLine : MonoBehaviour
 								lineRenderer.startColor = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
 								lineRenderer.endColor = new Color (0, 0, 0, 0);
 							} 
-							if (usedNodes.Count >= nodes.Count && CheckIfEveryNodeIsReached() && hit.collider.transform.gameObject.GetInstanceID () == nodes [lastNodeIndex].GetInstanceID ()) {
+							if (usedNodes.Count >= nodes.Count && CheckIfEveryNodeIsReached () && hit.collider.transform.gameObject.GetInstanceID () == nodes [lastNodeIndex].GetInstanceID ()) {
 								//check if the end condition has been met
 								solved = true;
 								Debug.Log ("the extremely hard puzzle has been conquered");
@@ -167,11 +172,69 @@ public class DrawLine : MonoBehaviour
 				if (Input.GetKeyUp (KeyCode.Mouse0)) {
 					CheckIfNoLongerDrawing ();
 				}
+			} else { //music puzzle
+				//	Connects mose position on screen to game screen
+				ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+
+				//	If the mouse ray collides with something go into this if-statement
+				if (Physics.Raycast (ray, out hit)) {
+					//	If it collides with a HARTONODE go into this if-statement
+					//	Waits for player to left click [INITIAL]
+					if (Input.GetKeyDown (KeyCode.Mouse0)) {
+						if (hit.collider.tag == HARTO_NODE) {
+							usedNodes.Add (hit.collider.transform.gameObject);
+							DrawNewLine ();
+						}	
+					}
+
+					if (hit.collider.tag == HARTO_NODE) {
+						for (int i = 0; i < nodes.Count; i++) {
+							if (hit.collider.transform.gameObject.GetInstanceID () == nodes [i].GetInstanceID ()) {
+								if (!audios [i].isPlaying) {
+									audios [i].PlayOneShot (audios [i].clip);
+									if (audioCount == i) {
+										audioCheck [audioCount] = true;
+										audioCount++;
+
+									}
+								}
+							}
+						}
+					}
+				}
+
+				//	Keep left mouse button down to keep drawing. 
+				if (Input.GetKey (KeyCode.Mouse0) && drawingLine) {			
+					if (Physics.Raycast (ray, out hit)) {
+						if (hit.collider.tag == HARTO_NODE) {
+							//if (hit.collider.transform.gameObject.GetInstanceID () != usedNodes [usedNodes.Count - 1].GetInstanceID ()) {
+
+							if (!usedNodes.Contains (hit.collider.transform.gameObject)) {
+								usedNodes.Add (hit.collider.transform.gameObject);
+								//finish drawing the previous line
+								lineRenderer.SetPosition (1, usedNodes [usedNodes.Count - 1].transform.position);
+								DrawNewLine ();
+							} 
+
+							if (usedNodes.Count >= nodes.Count && CheckIfEveryNodeIsReached () && CheckIfAudioPlayedInOrder()) {
+								//check if the end condition has been met
+								solved = true;
+								Debug.Log ("the extremely hard puzzle has been conquered");
+							}
+						}
+					}
+					//	Sets the end point of the line to where ever your mouse position is on screen (and off screen?)
+					destination = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+					lineRenderer.SetPosition (1, new Vector3 (destination.x, destination.y, 0));
+				}
+
+				//	When you release the left mouse button
+				if (Input.GetKeyUp (KeyCode.Mouse0)) {
+					CheckIfNoLongerDrawing ();
+				}
+
+
 			}
-		} else { //music puzzle
-
-
-
 		}
 
 		if (Input.GetKeyDown (KeyCode.R)) {
@@ -183,6 +246,20 @@ public class DrawLine : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Application.Quit ();
 		}
+	}
+
+	bool CheckIfAudioPlayedInOrder(){
+		int count = 0;
+		for (int i = 0; i < audioCheck.Length; i++) {
+			if (audioCheck [i]) {
+				count++;
+			}
+		}
+		if (count == audioCheck.Length) {
+			return true;
+		}
+		return false;
+
 	}
 
 	bool CheckIfEveryNodeIsReached(){
@@ -206,22 +283,27 @@ public class DrawLine : MonoBehaviour
 
 
 	void CheckIfNoLongerDrawing(){
-			//	When you release the left mouse button you are no longer drawing the line
-			drawingLine = false;
-			//destroy every line
-			if(lines.Count > 0){
-				for (int i = lines.Count - 1; i >= 0; i--) {
-					GameObject line = lines [i];
-					lines.RemoveAt (i);
-					Destroy (line);
-				}
+		//	When you release the left mouse button you are no longer drawing the line
+		drawingLine = false;
+		//destroy every line
+		if(lines.Count > 0){
+			for (int i = lines.Count - 1; i >= 0; i--) {
+				GameObject line = lines [i];
+				lines.RemoveAt (i);
+				Destroy (line);
 			}
-			if (usedNodes.Count > 0) {
-				for (int i = usedNodes.Count - 1; i >= 0; i--) {
-					GameObject node = usedNodes [i];
-					usedNodes.RemoveAt (i);
-				}
+		}
+		if (usedNodes.Count > 0) {
+			for (int i = usedNodes.Count - 1; i >= 0; i--) {
+				GameObject node = usedNodes [i];
+				usedNodes.RemoveAt (i);
 			}
+		}
+		for (int i = 0; i < audioCheck.Length; i++) {
+			audioCheck [i] = false;
+		}
+		audioCount = 0; 
+
 	}
 
 	void DrawNewLine(){
