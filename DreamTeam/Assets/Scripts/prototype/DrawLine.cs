@@ -59,6 +59,8 @@ public class DrawLine : MonoBehaviour
 
 	private int audioCount;
 	private bool[] audioCheck;
+
+	public GameObject particleSystem;
 	
 	/*--------------------------------------------------------------------------------------*/
     /*																						*/
@@ -76,17 +78,10 @@ public class DrawLine : MonoBehaviour
 			go.transform.position = new Vector3 (go.transform.position.x, Random.Range (-boundaryY, boundaryY), go.transform.position.z);
 		}
 
-		lastNodeIndex = Random.Range(0,nodes.Count);
-		audiomanager = GameObject.Find ("AudioManager").GetComponent<AudioManager_prototype> ();
-		audios = new AudioSource[nodes.Count];
-		audios [0] = audiomanager.C;
-		audios [1] = audiomanager.D;
-		audios [2] = audiomanager.E;
-		audios [3] = audiomanager.F;
-		audios [4] = audiomanager.G;
+		shuffleGameObjects (nodes);
 
-		audioCheck = new bool[audios.Length];
-		//shuffleAudios (audios);
+		lastNodeIndex = Random.Range(0,nodes.Count);
+
 
 		if (puzzleToggle) {
 			shuffleMaterials (materials);
@@ -96,8 +91,20 @@ public class DrawLine : MonoBehaviour
 				materialIndex++;
 			}
 			ringRenderer = GameObject.Find ("UtanRing").GetComponent<Renderer> ();
-			ringRenderer.material = materials[lastNodeIndex];
+			ringRenderer.material = materials [lastNodeIndex];
+		} else {
+			audiomanager = GameObject.Find ("AudioManager").GetComponent<AudioManager_prototype> ();
+			audios = new AudioSource[nodes.Count];
+			audios [0] = audiomanager.C;
+			audios [1] = audiomanager.D;
+			audios [2] = audiomanager.E;
+			audios [3] = audiomanager.F;
+			audios [4] = audiomanager.G;
+
+			audioCheck = new bool[audios.Length];
 		}
+
+		//for(int i = 0; i < 
 
 	}
 
@@ -126,6 +133,10 @@ public class DrawLine : MonoBehaviour
 							DrawNewLine ();
 							lineRenderer.startColor = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
 							lineRenderer.endColor = new Color (0, 0, 0, 0);
+							particleSystem.SetActive (true);
+							particleSystem.GetComponent<ParticleSystem>().Play();
+							particleSystem.transform.position = hit.collider.transform.position;
+						//	particleSystem.GetComponent<ParticleSystemRenderer>().material.color = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
 						}	
 					}
 				}
@@ -137,14 +148,16 @@ public class DrawLine : MonoBehaviour
 							if (hit.collider.transform.gameObject.GetInstanceID () != usedNodes [usedNodes.Count - 1].GetInstanceID ()) {
 
 								lineRenderer.endColor = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
-								//	if (!usedNodes.Contains (hit.collider.transform.gameObject)) {
 								usedNodes.Add (hit.collider.transform.gameObject);
 								//finish drawing the previous line
 								lineRenderer.SetPosition (1, usedNodes [usedNodes.Count - 1].transform.position);
-								DrawNewLine ();
 
+								DrawNewLine ();
 								lineRenderer.startColor = hit.collider.transform.gameObject.GetComponent<Renderer> ().material.color;
 								lineRenderer.endColor = new Color (0, 0, 0, 0);
+
+								particleSystem.GetComponent<ParticleSystem>().Play();
+								particleSystem.transform.position = hit.collider.transform.position;
 							} 
 							if (usedNodes.Count >= nodes.Count && CheckIfEveryNodeIsReached () && hit.collider.transform.gameObject.GetInstanceID () == nodes [lastNodeIndex].GetInstanceID ()) {
 								//check if the end condition has been met
@@ -168,24 +181,34 @@ public class DrawLine : MonoBehaviour
 
 				//	If the mouse ray collides with something go into this if-statement
 				if (Physics.Raycast (ray, out hit)) {
-					//	If it collides with a HARTONODE go into this if-statement
-					//	Waits for player to left click [INITIAL]
-					if (Input.GetKeyDown (KeyCode.Mouse0)) {
-						if (hit.collider.tag == HARTO_NODE) {
+					if (hit.collider.tag == HARTO_NODE) {
+						if (Input.GetKeyDown (KeyCode.Mouse0)) {
+							
 							usedNodes.Add (hit.collider.transform.gameObject);
 							DrawNewLine ();
-						}	
-					}
 
-					if (hit.collider.tag == HARTO_NODE) {
-						for (int i = 0; i < nodes.Count; i++) {
-							if (hit.collider.transform.gameObject.GetInstanceID () == nodes [i].GetInstanceID ()) {
-								if (!audios [i].isPlaying) {
-									audios [i].PlayOneShot (audios [i].clip);
+							//initial check
+							for (int i = 0; i < nodes.Count; i++) {
+								if (hit.collider.transform.gameObject.GetInstanceID () == nodes [i].GetInstanceID ()) {
 									if (audioCount == i) {
 										audioCheck [audioCount] = true;
 										audioCount++;
-
+									}
+								}
+							}
+							particleSystem.SetActive (true);
+							particleSystem.GetComponent<ParticleSystem>().Play();
+							particleSystem.transform.position = hit.collider.transform.position;
+							
+						}
+						for (int i = 0; i < nodes.Count; i++) {
+							if (hit.collider.transform.gameObject.GetInstanceID () == nodes [i].GetInstanceID ()) {
+								if (!audios [i].isPlaying ) {
+									audios [i].PlayOneShot (audios [i].clip);
+									if (audioCount == i && usedNodes.Count > 0) {
+										audioCheck [audioCount] = true;
+										audioCount++;
+										Debug.Log (audioCount);
 									}
 								}
 							}
@@ -197,13 +220,13 @@ public class DrawLine : MonoBehaviour
 				if (Input.GetKey (KeyCode.Mouse0) && drawingLine) {			
 					if (Physics.Raycast (ray, out hit)) {
 						if (hit.collider.tag == HARTO_NODE) {
-							//if (hit.collider.transform.gameObject.GetInstanceID () != usedNodes [usedNodes.Count - 1].GetInstanceID ()) {
-
 							if (!usedNodes.Contains (hit.collider.transform.gameObject)) {
 								usedNodes.Add (hit.collider.transform.gameObject);
 								//finish drawing the previous line
 								lineRenderer.SetPosition (1, usedNodes [usedNodes.Count - 1].transform.position);
 								DrawNewLine ();
+								particleSystem.GetComponent<ParticleSystem>().Play();
+								particleSystem.transform.position = hit.collider.transform.position;
 							} 
 
 							if (usedNodes.Count >= nodes.Count && CheckIfEveryNodeIsReached () && CheckIfAudioPlayedInOrder()) {
@@ -289,11 +312,14 @@ public class DrawLine : MonoBehaviour
 				usedNodes.RemoveAt (i);
 			}
 		}
-		for (int i = 0; i < audioCheck.Length; i++) {
-			audioCheck [i] = false;
+		if (!puzzleToggle) {
+			for (int i = 0; i < audioCheck.Length; i++) {
+				audioCheck [i] = false;
+			}
+			audioCount = 0; 
 		}
-		audioCount = 0; 
 
+		particleSystem.SetActive (false);
 	}
 
 	void DrawNewLine(){
@@ -337,4 +363,12 @@ public class DrawLine : MonoBehaviour
 		}
 	}
 
+	void shuffleGameObjects(List<GameObject> list){
+		for(int t = 0; t < list.Count; t++){
+			GameObject obj = list [t];
+			int r = Random.Range (t, list.Count);
+			list [t] = list [r];
+			list [r] = obj;
+		}
+	}
 }
