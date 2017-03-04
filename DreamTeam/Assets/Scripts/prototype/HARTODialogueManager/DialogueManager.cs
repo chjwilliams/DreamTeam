@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameEventManager;
+using GameEvents;
 
 public class DialogueManager : MonoBehaviour {
 
@@ -9,17 +12,30 @@ public class DialogueManager : MonoBehaviour {
 	public EventScript[] Events;
 	private int RelationLevel;
 
+	public const string EVENT_PREFIX = "Event_";
+	public const string EVENT_ASTRID_TALKS_FIRST = "@";
 	public const string EVENT_MEETING_ASTRID_STARTS = "Event_Meeting@";
 	public const string EVENT_UTAN_ASTRID_STARTS = "Event_Utan@";
 	public const string PLAYER_ASTRID = "Player_Astrid";
 
+	public const string NPC_TAG = "NPC_";
 	public const string NPC_MOM = "NPC_Mom";
 	public const string NPC_MALI = "NPC_Mali";
 
+	private EmotionSelectedEvent.Handler onTopicSelected;
 
 	// Use this for initialization
 	void Start () 
 	{
+		onTopicSelected = new TopicSelectedEvent.Handler(OnTopicSelected);
+		GameEventsManager.Instance.Register<TopicSelectedEvent>(onTopicSelected);
+	}
+
+	void OnTopicSelected(GameEvent e)
+	{
+		string selectedEvent = EVENT_UTAN_ASTRID_STARTS; //EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.ToString() + EVENT_ASTRID_TALKS_FIRST;
+		Debug.Log(EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.name + EVENT_ASTRID_TALKS_FIRST);
+		InitDialogueEvent(selectedEvent, NPC_TAG + ((TopicSelectedEvent)e).player.npcAstridIsTalkingTo.name);
 		
 	}
 
@@ -35,15 +51,6 @@ public class DialogueManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKeyDown(KeyCode.M))
-		{
-			InitDialogueEvent(EVENT_MEETING_ASTRID_STARTS, NPC_MOM);
-		}
-		else if (Input.GetKeyDown(KeyCode.U))
-		{
-			InitDialogueEvent(EVENT_UTAN_ASTRID_STARTS, NPC_MALI);
-
-		}
 		
 	}
 }

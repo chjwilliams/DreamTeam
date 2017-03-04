@@ -28,10 +28,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
-		[SerializeField] private Camera m_ThirdPersonController; 
-		[SerializeField] private KeyCode m_Speak = KeyCode.Mouse0;
 		[SerializeField] private HartoTuningController m_HARTO;
 
+        public SphereCollider personalSpace;
+        public Collider npcAstridIsTalkingTo;
         private Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
@@ -59,8 +59,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
-			m_ThirdPersonController = Camera.main;
-			m_HARTO = GameObject.Find ("TemporaryHARTO").GetComponent<HartoTuningController> ();
+            personalSpace = GetComponent<SphereCollider>();
+			//m_HARTO = GameObject.Find ("TemporaryHARTO").GetComponent<HartoTuningController> ();
         }
 
 
@@ -266,13 +266,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-		private void OnTriggerStay(Collider other) {
-			// if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) {
-			// 	if (Input.GetKeyDown(m_Speak) && !m_IsTalking) {
-			// 		m_IsTalking = true;
-			// 		StartCoroutine(DialougeManager.instance.initDialogue(other.name));
-			// 	}
-			// }
+		private void OnTriggerEnter(Collider other) 
+        {
+			if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) 
+            {
+                npcAstridIsTalkingTo = other;
+			}
+		}
+
+        private void OnTriggerExit(Collider other) 
+        {
+			if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) 
+            {
+                npcAstridIsTalkingTo = null;
+			}
 		}
 
         public void setTalking (bool b) {

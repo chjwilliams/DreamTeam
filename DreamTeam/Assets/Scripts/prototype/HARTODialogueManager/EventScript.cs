@@ -10,7 +10,7 @@ public class EventScript : MonoBehaviour
 	public const string PLAYER_ASTRID = "Player_Astrid";
 	public const string VO = " VO";
 	public const string ASTRID_TALKS_FIRST = "@";
-	public const string NO_EMOTION_SELECTED = "NAN";
+	public const string NO_EMOTION_SELECTED = "None";
 	public int totalResponses;
 	public int astridLines;
 	public int npcLines;
@@ -29,7 +29,9 @@ public class EventScript : MonoBehaviour
 			myCharacters.Add(thisEventsCharacters[i]);
 		}
 
-		astridHARTO = GameObject.FindGameObjectWithTag("HARTO").GetComponent<HARTO>();	
+		astridHARTO = GameObject.FindGameObjectWithTag("HARTO").GetComponent<HARTO>();
+		
+	
 	}
 
 	public void InitResponseScriptWith(string characterName)
@@ -145,7 +147,6 @@ public class EventScript : MonoBehaviour
 				{
 					response = thisResponse.GetComponent<ResponseScript>();
 				}
-				
 				npcLines++;
 			}
 			else
@@ -154,7 +155,6 @@ public class EventScript : MonoBehaviour
 
 				if (thisResponse.transform.childCount > 1)
 				{
-					
 					response = thisResponse.GetComponent<EmotionalResponseScript>();
 					waitingForEmotionalInput = true;
 				}
@@ -162,9 +162,7 @@ public class EventScript : MonoBehaviour
 				{
 					response = thisResponse.GetComponent<ResponseScript>();
 				}
-				
 				astridLines++;
-				Debug.Log("Astrid line Increases to " + astridLines);
 			}
 			
 		}

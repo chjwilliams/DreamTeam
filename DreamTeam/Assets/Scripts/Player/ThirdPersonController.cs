@@ -20,11 +20,9 @@ public class ThirdPersonController : MonoBehaviour {
 	private float _maxzoomin = -4.0f;
 	private float _maxzoomout = -1.0f;
 	private float _rotatespeed = 2.0f;
-	private Rigidbody _rigidbody;
 
 	// Use this for initialization
 	void Start () {
-		_rigidbody = GetComponent<Rigidbody> ();
 		zoomvalue = _maxzoomout;
 	}
 	

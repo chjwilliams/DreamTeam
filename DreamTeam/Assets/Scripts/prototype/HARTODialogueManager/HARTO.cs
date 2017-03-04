@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameEventManager;
+using GameEvents;
 
 
 public  enum  Emotions
 {
-	NAN,
+	None,
 	Happy,
 	Sad,
 	Curious
 }
 public class HARTO : MonoBehaviour 
 {
-
+	[SerializeField]
 	private Emotions emotion;
 	public Emotions CurrentEmotion
 	{
@@ -22,47 +24,21 @@ public class HARTO : MonoBehaviour
 		}
 	}
 
-
+	private EmotionSelectedEvent.Handler onEmotionSelected;
 	// Use this for initialization
 	void Start () 
 	{
-		emotion = Emotions.NAN;
+		onEmotionSelected = new EmotionSelectedEvent.Handler(OnEmotionSelected);
+		GameEventsManager.Instance.Register<EmotionSelectedEvent>(onEmotionSelected);
 	}
 	
-	private void SetEmotion(KeyCode key)
+	void OnEmotionSelected(GameEvent e)
 	{
-		if (Input.GetKey(key))
-		{
-			emotion = Emotions.Happy;
-		}
-		else if (key == KeyCode.Alpha1)
-		{
-			emotion = Emotions.Sad;
-		}
-		else if (key == KeyCode.Alpha2)
-		{
-			emotion = Emotions.Curious;
-		}
-
-		
+		 emotion = ((EmotionSelectedEvent)e).hartoEmotion.currentEmotion;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetKey(KeyCode.Alpha1))
-		{
-			emotion = Emotions.Happy;
-		}
-		else if (Input.GetKey(KeyCode.Alpha2))
-		{
-			emotion = Emotions.Sad;
-		}
-		else if (Input.GetKey(KeyCode.Alpha3))
-		{
-			emotion = Emotions.Curious;
-		}
-
-		Debug.Log(emotion.ToString());
 	}
 }

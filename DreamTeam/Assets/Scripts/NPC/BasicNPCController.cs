@@ -51,7 +51,7 @@ public class BasicNPCController : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {   
 		if (other.gameObject.CompareTag ("Astrid")) {     //if the other collider has the tag of "Astrid" , do the stuff
 			if (!acknowledgePlayer) {					//whether the player is talking with other game object? if not, do the stuff
-				transform.Translate (Vector3.up);		//lift me up if I am talking to player. That's why I am shaking.
+				//transform.Translate (Vector3.up);		//lift me up if I am talking to player. That's why I am shaking.
 				acknowledgePlayer = true;				//Other script will know I am talking to player
 			}
 		}
@@ -66,15 +66,15 @@ public class BasicNPCController : MonoBehaviour {
 
 			transform.rotation = rotation;  //make the rotation to the enter's rotation?
 
-			//if you are in the right frequency, change the color, to let player know they got it right.
-			if (HARTO.currentfrequency > myFrequency - range && HARTO.currentfrequency < myFrequency + range) {
-				GetComponent<MeshRenderer> ().material.color = new Color (0.0f, 0.0f, 1.0f);   
-			}
+		// 	//if you are in the right frequency, change the color, to let player know they got it right.
+		// 	if (HARTO.currentfrequency > myFrequency - range && HARTO.currentfrequency < myFrequency + range) {
+		// 		GetComponent<MeshRenderer> ().material.color = new Color (0.0f, 0.0f, 1.0f);   
+		// 	}
 
-			//else if the animation has not shown yet, change the color
-			else  if (!gestureAnimationDone){
-				GetComponent<MeshRenderer> ().material.color = new Color (1.0f, 0.0f, 0.0f);
-			}
+		// 	//else if the animation has not shown yet, change the color
+		// 	else  if (!gestureAnimationDone){
+		// 		GetComponent<MeshRenderer> ().material.color = new Color (1.0f, 0.0f, 0.0f);
+		// 	}
 		}
 	}
 
