@@ -35,7 +35,14 @@ public class DialogueManager : MonoBehaviour {
 	{
 		string selectedEvent = EVENT_UTAN_ASTRID_STARTS; //EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.ToString() + EVENT_ASTRID_TALKS_FIRST;
 		Debug.Log(EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.name + EVENT_ASTRID_TALKS_FIRST);
-		InitDialogueEvent(selectedEvent, NPC_TAG + ((TopicSelectedEvent)e).player.npcAstridIsTalkingTo.name);
+		try
+		{
+			InitDialogueEvent(selectedEvent, NPC_TAG + ((TopicSelectedEvent)e).player.npcAstridIsTalkingTo.name);
+		}
+		catch (Exception ex)
+		{
+			Debug.Log("You are not talking to an NPC or the current NPC is not attached to this event.");
+		}
 		
 	}
 

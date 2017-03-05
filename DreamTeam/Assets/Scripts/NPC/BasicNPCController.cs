@@ -20,6 +20,7 @@ public class BasicNPCController : MonoBehaviour {
 
 	public bool gestureAnimationDone;        //whether we have done the gesture animation
 	public HartoTuningController HARTO;      //Game object HARTO
+	public Color myColor;
 	public float myFrequency;					//
 	public float range;
 	public bool acknowledgePlayer;
@@ -32,6 +33,8 @@ public class BasicNPCController : MonoBehaviour {
 		range = 2.5f;								// the range of the frequency you can talk to me
 		acknowledgePlayer = false;					//I am not talking with the player
 		gestureAnimationDone = false;				//at the start, gesture animation has not shown yet
+		myColor = GetComponent<MeshRenderer>().material.color;
+		GetComponent<MeshRenderer>().material.color = new Color (1, 1, 0, 1);
 		
 	}
 	
@@ -43,7 +46,7 @@ public class BasicNPCController : MonoBehaviour {
 	//the function we start play the animation
 	public void startGestureAnimation() {
 		gestureAnimationDone = true;   //set this bool to true  after we played the animation
-		GetComponent<MeshRenderer> ().material.color = new Color (0.0f, 0.0f, 0.0f); // change the color of the object after we played the animation
+		//GetComponent<MeshRenderer> ().material.color = new Color (0.0f, 0.0f, 0.0f); // change the color of the object after we played the animation
 
 	}
 
@@ -53,6 +56,7 @@ public class BasicNPCController : MonoBehaviour {
 			if (!acknowledgePlayer) {					//whether the player is talking with other game object? if not, do the stuff
 				//transform.Translate (Vector3.up);		//lift me up if I am talking to player. That's why I am shaking.
 				acknowledgePlayer = true;				//Other script will know I am talking to player
+				GetComponent<MeshRenderer>().material.color  = new Color (0, 1, 0, 1);
 			}
 		}
 	}
@@ -61,7 +65,6 @@ public class BasicNPCController : MonoBehaviour {
 	void OnTriggerStay(Collider other) {
 		if (other.gameObject.CompareTag ("Astrid")) {			//if the other collider has the tag of "Astrid" , do the stuff
 			Vector3 delta = new Vector3(other.gameObject.transform.position.x - transform.position.x, 0.0f, other.gameObject.transform.position.z - transform.position.z);  //get the position of the collider who enter
-
 			Quaternion rotation = Quaternion.LookRotation(delta); //rotation in that direction?
 
 			transform.rotation = rotation;  //make the rotation to the enter's rotation?
@@ -80,6 +83,10 @@ public class BasicNPCController : MonoBehaviour {
 
 	//if the collider leave me, stop talking to the player, and also let other game object know that.
 	void OnTriggerExit(Collider other) {
-		acknowledgePlayer = false;
+		if (other.gameObject.CompareTag("Astrid"))
+		{
+			GetComponent<MeshRenderer>().material.color  = new Color (1, 1, 0, 1);
+			acknowledgePlayer = false;
+		}
 	}
 }

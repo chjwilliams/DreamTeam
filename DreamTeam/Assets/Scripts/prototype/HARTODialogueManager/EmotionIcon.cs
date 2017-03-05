@@ -29,5 +29,10 @@ public class EmotionIcon : Icon
 	void Update () 
 	{
 		base.Update();
+
+		if (selected && astridHARTO.isHARTOActive)
+		{
+			myIcon.color = activeColor;
+		}
 	}
 }

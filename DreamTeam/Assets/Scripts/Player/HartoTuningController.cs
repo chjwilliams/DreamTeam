@@ -170,26 +170,33 @@ public class HartoTuningController : MonoBehaviour {
 				}
 			}
 
-			if (Input.GetKeyDown (activateHARTO)) {
+			if (Input.GetKeyDown (activateHARTO)) 
+			{
 				HARTOisActive = !HARTOisActive;
 
 			}
 
-			if (HARTOisActive) {
+			if (HARTOisActive) 
+			{
 				HARTOalpha += incrementAlpha * Time.deltaTime;
-				if (HARTOalpha > 1.0f) {
+				if (HARTOalpha > 1.0f) 
+				{
 					HARTOalpha = 1.0f;
 				}
-			} else {
+			} 
+			else 
+			{
 				HARTOalpha -= incrementAlpha * Time.deltaTime;
-				if (HARTOalpha < 0.0f) {
+				if (HARTOalpha < 0.0f) 
+				{
 					HARTOalpha = 0.0f;
 				}
 			}
 			
 			toggleHARTO (HARTOalpha);
 		}
-		else {
+		else 
+		{
 			toggleHARTO (0);
 
 		}

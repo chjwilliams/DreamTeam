@@ -36,6 +36,7 @@ public class EventScript : MonoBehaviour
 
 	public void InitResponseScriptWith(string characterName)
 	{
+		//	FIRE EVENT DIALOUGE STARTED
 		totalLines = 0;
 		astridLines = 0;
 		npcLines = 0;
@@ -83,13 +84,6 @@ public class EventScript : MonoBehaviour
 			StartCoroutine(PlayEventDialogue(characterName));
 		}
 	}
-
-	// IEnumerator WaitForEmotionalInput(EmotionalResponseScript emotionResponse)
-	// {
-		
-	// 		//emotionResponse.GetEmotionalInput();	
-		
-	// }
 
 	public IEnumerator PlayEventDialogue(string characterName)
 	{
@@ -166,6 +160,7 @@ public class EventScript : MonoBehaviour
 			}
 			
 		}
+		// FIRE EVENT DIALOGUE ENDED
 		yield return null;
 	}
 	

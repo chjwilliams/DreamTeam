@@ -12,8 +12,12 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	public const string ASTRID = "Astrid";
 
 	public KeyCode toggleHARTO = KeyCode.Tab;
+	public bool canUseHARTO;
 	public bool isHARTOActive;
 	public bool topicSelected;
+	public float alphaChannelHARTO;
+	public float deltaAlpha = 2.0f;							//	How much we increment/decrement the alpha channel of HARTO GameObject
+
 	public float rotationSpeed = 20.0f;
 	public float selectionAreaWidth;
 	public GameObject topicWheel;
@@ -39,7 +43,9 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		isHARTOActive = true;
+		canUseHARTO = true;
+		isHARTOActive = false;
+		alphaChannelHARTO = 0;
 
 		canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 		topicSelected = false;
@@ -58,66 +64,59 @@ public class HARTOTuningv3Script : MonoBehaviour {
 		GameEventsManager.Instance.Register<TopicSelectedEvent>(onToggleHARTO);
 
 		player = GameObject.Find(ASTRID).GetComponent<FirstPersonController>();
+
+		//StartCoroutine(FadeHARTO());
 	}
 
 	void OnToggleHARTO(GameEvent e)
 	{
-		Debug.Log("HERE");
 		
 	}
 
-	IEnumerator FadeHARTO()
+	void FadeHARTO(float alpha)
 	{
-		Debug.Log("Now");
-		
-			float t = 0;
-			while (t < 1)
+		for (int i = 0; i < emotionWheelIcons.Length; i++)
+		{
+			if (!emotionWheelIcons[i].selected)
 			{
-				if (isHARTOActive)
-				{
-					for (int i = 0; i < emotionWheelIcons.Length; i++)
-					{
-						emotionWheelIcons[i].myIcon.color = Color.Lerp(emotionWheelIcons[i].myColor, transparent, t);
-					}
-					for (int i = 0; i < topicWheelIcons.Length; i++)
-					{
-						topicWheelIcons[i].myIcon.color = Color.Lerp(topicWheelIcons[i].myColor, transparent, t);
-					}
-					for (int i = 0; i < canvas.transform.childCount; i++)
-					{
-						canvas.transform.GetChild(i).GetComponent<Image>().color = Color.Lerp(canvas.transform.GetChild(i).GetComponent<Image>().color, transparent, t);
-					}
-				}
-				else
-				{
-					for (int i = 0; i < emotionWheelIcons.Length; i++)
-					{
-						emotionWheelIcons[i].myIcon.color  = Color.Lerp(transparent, opaqueTopic, t);
-					}
-					for (int i = 0; i < topicWheelIcons.Length; i++)
-					{
-						topicWheelIcons[i].myIcon.color  = Color.Lerp(transparent, opaqueTopic, t);
-					}
-					for (int i = 0; i < canvas.transform.childCount - 1; i++)
-					{
-						
-						if (canvas.transform.GetChild(i) != selectionArea)
-						{
-							canvas.transform.GetChild(i).GetComponent<Image>().color = Color.Lerp(transparent, opaqueWheel,t);
-						}
-						else
-						{
-							canvas.transform.GetChild(i).GetComponent<Image>().color = Color.Lerp(transparent, selectionAreaColor,t);
-						}
-					}
-					canvas.transform.GetChild(2).GetComponent<Image>().color = Color.Lerp(transparent, selectionAreaColor,t);
-				}
-			t += Time.deltaTime;
+				emotionWheelIcons[i].myIcon.color =  new Color(emotionWheelIcons[i].myIcon.color.r,
+																emotionWheelIcons[i].myIcon.color.g,
+																emotionWheelIcons[i].myIcon.color.b,
+																alpha * Icon.alphaLimit);
+			}
 		}
 
-		isHARTOActive = !isHARTOActive;
+		for (int i = 0; i < topicWheelIcons.Length; i++)
+		{
+	
+			topicWheelIcons[i].myIcon.color = new Color(topicWheelIcons[i].myIcon.color.r,
+													 		topicWheelIcons[i].myIcon.color.g,
+															topicWheelIcons[i].myIcon.color.b,
+															alpha * Icon.alphaLimit);
+			if (topicSelected)
+			{
+				topicWheelIcons[i].myIcon.color = new Color(topicWheelIcons[i].myIcon.color.r,
+													 		topicWheelIcons[i].myIcon.color.g,
+															topicWheelIcons[i].myIcon.color.b,
+															alpha * 0);
+			}
 
-		yield return new WaitForEndOfFrame();
+
+		}
+		for (int i = 0; i < canvas.transform.childCount; i++)
+		{
+			canvas.transform.GetChild(i).GetComponent<Image>().color = new Color(canvas.transform.GetChild(i).GetComponent<Image>().color.r,
+			 																		canvas.transform.GetChild(i).GetComponent<Image>().color.g,
+																					canvas.transform.GetChild(i).GetComponent<Image>().color.b,
+																					 alpha);
+			if (topicSelected)
+			{
+				topicWheel.GetComponent<Image>().color = new Color(topicWheel.GetComponent<Image>().color.r,
+			 														topicWheel.GetComponent<Image>().color.g,
+																	topicWheel.GetComponent<Image>().color.b,
+																					 0);
+			}
+		}
 	}
 	
 	/*--------------------------------------------------------------------------------------*/
@@ -157,22 +156,24 @@ public class HARTOTuningv3Script : MonoBehaviour {
 				myIconArray[i].transform.position.x > selectionArea.transform.position.x - selectionAreaWidth &&
 				Input.GetKeyDown(KeyCode.Mouse0))
 			{
-				myIconArray[i].myColor = Icon.activeColor;
 				if (topicHasBeenSelected)
 				{
 					currentEmotion = ((EmotionIcon)myIconArray[i]).emotion;
+					myIconArray[i].selected = true;
 					GameEventsManager.Instance.Fire(new EmotionSelectedEvent(this));
 				}
 				else
 				{
 					currentTopic = myIconArray[i];
-					topicHasBeenSelected = true;
+					myIconArray[i].selected = true;
+					topicSelected = true;
 					GameEventsManager.Instance.Fire(new TopicSelectedEvent(this, player));
 				}
 			}
 			else
 			{
-				myIconArray[i].myColor = Icon.inactiveColor;
+				myIconArray[i].myIcon.color = Icon.inactiveColor;
+				myIconArray[i].selected = false;
 			}
 		}
 	}
@@ -180,18 +181,45 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKeyDown(KeyCode.Mouse0))
+		if (canUseHARTO)
 		{
-			SelectIcon(topicSelected);
-		}
+			if (Input.GetKeyDown(toggleHARTO))
+			{
+				isHARTOActive = !isHARTOActive;
+				topicSelected = false;
+				GameEventManager.GameEventsManager.Instance.Fire(new ToggleHARTOEvent());
+			}
 
-		if (Input.GetKeyDown(toggleHARTO))
+			if (isHARTOActive) 
+			{
+				if (Input.GetKeyDown(KeyCode.Mouse0))
+				{
+					SelectIcon(topicSelected);
+				}
+
+				rotateHARTO = rotateHARTO +  Input.GetAxis (SCROLLWHEEL) * Time.deltaTime;
+				RotateEmotionWheel(rotateHARTO, topicSelected);
+
+				alphaChannelHARTO += deltaAlpha * Time.deltaTime;
+				if (alphaChannelHARTO > 1.0f) 
+				{
+					alphaChannelHARTO = 1.0f;
+				}
+			}	 
+			else 
+			{
+				alphaChannelHARTO -= deltaAlpha * Time.deltaTime;
+				if (alphaChannelHARTO < 0.0f) 
+				{
+					alphaChannelHARTO = 0.0f;
+				}
+			}
+			
+			FadeHARTO (alphaChannelHARTO);
+		}
+		else
 		{
-			GameEventManager.GameEventsManager.Instance.Fire(new ToggleHARTOEvent());
-			StartCoroutine(FadeHARTO());
+			FadeHARTO (0);
 		}
-
-		rotateHARTO = rotateHARTO +  Input.GetAxis (SCROLLWHEEL) * Time.deltaTime;
-		RotateEmotionWheel(rotateHARTO, topicSelected);
 	}
 }
