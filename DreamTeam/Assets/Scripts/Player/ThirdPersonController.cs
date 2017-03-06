@@ -30,8 +30,8 @@ public class ThirdPersonController : MonoBehaviour {
 	void Update () {
 		if (GameManager.gm.thirdPersonActive) {
 
-		float x = Input.GetAxis ("Horizontal");
-		float z = Input.GetAxis ("Vertical");
+		//float x = Input.GetAxis ("Horizontal");
+		//float z = Input.GetAxis ("Vertical");
 		zoomvalue += Input.GetAxis ("Mouse ScrollWheel");
 		if (zoomvalue < _maxzoomin) {
 			zoomvalue = _maxzoomin;

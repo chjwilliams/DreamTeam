@@ -41,7 +41,7 @@ public class DialogueManager : MonoBehaviour {
 		}
 		catch (Exception ex)
 		{
-			Debug.Log("You are not talking to an NPC or the current NPC is not attached to this event.");
+			Debug.Log("You are not talking to an NPC or the current NPC is not attached to this event. Stack Trace: " + ex.StackTrace);
 		}
 		
 	}

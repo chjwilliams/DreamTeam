@@ -21,7 +21,7 @@ public class EmotionIcon : Icon
 		}
 		catch (Exception e)
 		{
-			Debug.Log ("Emotion " + transform.name + " not found. Has " + transform.name + " been added to the Enum in HARTO.cs? ");
+			Debug.Log ("Emotion " + transform.name + " not found. Has " + transform.name + " been added to the Enum in HARTO.cs? Error: " + e.Message);
 		}
 	}
 	

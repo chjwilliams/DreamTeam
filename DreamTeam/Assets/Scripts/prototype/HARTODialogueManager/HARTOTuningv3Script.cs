@@ -38,9 +38,7 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	private BeginDialogueEvent.Handler onBeginDialogueEvent;
 	private EndDialogueEvent.Handler onEndDialogueEvent;
 	public Color transparent = new Color(1.0f, 1.0f, 1.0f);
-	private Color opaqueWheel = new Color (0.31f, 0.86f, 0.83f, 1.0f);
 	public Color selectionAreaColor;
-	private Color opaqueTopic = Icon.inactiveColor;
 	// Use this for initialization
 	void Start () 
 	{

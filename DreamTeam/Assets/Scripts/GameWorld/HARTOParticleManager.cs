@@ -109,8 +109,8 @@ public class HARTOParticleManager : MonoBehaviour
 	void Update () {
 		if (CompareTag("HARTONode"))
 		{
-			float x = Input.GetAxis(HORIZONTAL);
-			float y = Input.GetAxis(VERTICAL);
+			//float x = Input.GetAxis(HORIZONTAL);
+			//float y = Input.GetAxis(VERTICAL);
 			//Move(-x, y);
 			MoveNode(rightKey);
 			MoveNode(leftKey);
