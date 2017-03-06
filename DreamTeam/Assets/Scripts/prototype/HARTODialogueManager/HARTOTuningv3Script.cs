@@ -23,7 +23,7 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	public GameObject topicWheel;
 	public GameObject emotionWheel;
 	
-	
+	public bool inConversation;
 	public Canvas canvas;
 	public Emotions currentEmotion;
 	public Icon currentTopic;
@@ -35,7 +35,8 @@ public class HARTOTuningv3Script : MonoBehaviour {
 
 	[SerializeField]
 	private FirstPersonController player;
-	private ToggleHARTOEvent.Handler onToggleHARTO;
+	private BeginDialogueEvent.Handler onBeginDialogueEvent;
+	private EndDialogueEvent.Handler onEndDialogueEvent;
 	public Color transparent = new Color(1.0f, 1.0f, 1.0f);
 	private Color opaqueWheel = new Color (0.31f, 0.86f, 0.83f, 1.0f);
 	public Color selectionAreaColor;
@@ -43,6 +44,8 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		inConversation = false;
+
 		canUseHARTO = true;
 		isHARTOActive = false;
 		alphaChannelHARTO = 0;
@@ -60,17 +63,26 @@ public class HARTOTuningv3Script : MonoBehaviour {
 		emotionWheelIcons = emotionWheel.GetComponentsInChildren<Icon>();
 		emotionIcons = emotionWheel.GetComponentsInChildren<EmotionIcon>();
 
-		onToggleHARTO = new TopicSelectedEvent.Handler(OnToggleHARTO);
-		GameEventsManager.Instance.Register<TopicSelectedEvent>(onToggleHARTO);
+		onBeginDialogueEvent = new BeginDialogueEvent.Handler(OnBeginDialogueEvent);
+		GameEventsManager.Instance.Register<BeginDialogueEvent>(onBeginDialogueEvent);
+
+		onEndDialogueEvent = new EndDialogueEvent.Handler(OnEndDialogueEvent);
+		GameEventsManager.Instance.Register<EndDialogueEvent>(onEndDialogueEvent);
 
 		player = GameObject.Find(ASTRID).GetComponent<FirstPersonController>();
 
 		//StartCoroutine(FadeHARTO());
 	}
 
-	void OnToggleHARTO(GameEvent e)
+
+	private void OnBeginDialogueEvent(GameEvent e)
 	{
-		
+		inConversation = true;
+	}
+
+	private void OnEndDialogueEvent(GameEvent e)
+	{
+		inConversation = false;
 	}
 
 	void FadeHARTO(float alpha)
@@ -183,7 +195,7 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	{
 		if (canUseHARTO)
 		{
-			if (Input.GetKeyDown(toggleHARTO))
+			if (Input.GetKeyDown(toggleHARTO) && !inConversation)
 			{
 				isHARTOActive = !isHARTOActive;
 				topicSelected = false;

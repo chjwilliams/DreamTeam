@@ -29,6 +29,21 @@ namespace GameEvents
             
         }
     }
+    public class BeginDialogueEvent : GameEvent
+    {
+        public BeginDialogueEvent ()
+        {
+        
+        }
+    }
+
+     public class EndDialogueEvent : GameEvent
+    {
+        public EndDialogueEvent ()
+        {
+            
+        }
+    }
 
     public class EmotionSelectedEvent : GameEvent
     {

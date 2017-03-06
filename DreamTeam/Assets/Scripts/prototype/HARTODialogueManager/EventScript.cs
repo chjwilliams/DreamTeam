@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameEvents;
+using GameEventManager;
 
 public class EventScript : MonoBehaviour 
 {
@@ -18,6 +20,7 @@ public class EventScript : MonoBehaviour
 	public ResponseScript response;
 	public GameObject thisResponse;
 	public List<AudioSource> myCharacters;
+	
 
 	private HARTO astridHARTO;
 	// Use this for initialization
@@ -30,16 +33,19 @@ public class EventScript : MonoBehaviour
 		}
 
 		astridHARTO = GameObject.FindGameObjectWithTag("HARTO").GetComponent<HARTO>();
+
 		
 	
 	}
 
 	public void InitResponseScriptWith(string characterName)
 	{
-		//	FIRE EVENT DIALOUGE STARTED
+		GameEventsManager.Instance.Fire(new BeginDialogueEvent());
+
 		totalLines = 0;
 		astridLines = 0;
 		npcLines = 0;
+
 		if (GameObject.Find(characterName))
 		{
 			for (int i = 0; i < myCharacters.Count; i++)
@@ -89,7 +95,6 @@ public class EventScript : MonoBehaviour
 	{
 		while(totalLines < totalResponses)
 		{
-			float t = 0.0f;
 			totalLines++;
 
 			//	Redundant check (the first time)
@@ -118,6 +123,7 @@ public class EventScript : MonoBehaviour
 			}
 
 			//	Another way to wait until the line is done.
+			// float t = 0;
 			// while (t < response.elapsedSeconds * 40.0f)
 			// {
 			// 		t += Time.deltaTime;
@@ -160,12 +166,7 @@ public class EventScript : MonoBehaviour
 			}
 			
 		}
-		// FIRE EVENT DIALOGUE ENDED
+		GameEventManager.GameEventsManager.Instance.Fire(new EndDialogueEvent());
 		yield return null;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }
