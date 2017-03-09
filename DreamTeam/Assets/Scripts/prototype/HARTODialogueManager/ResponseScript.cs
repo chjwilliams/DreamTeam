@@ -11,12 +11,14 @@ public class ResponseScript : MonoBehaviour {
 	public VoiceOverLine myLine;
 
 	public AudioSource characterAudioSource;
+	//	public AudioSource gibberishAudioSource;
 	public string characterName;
 
 	// Use this for initialization
 	protected void Start () 
 	{
 		characterAudioSource = GetComponentInParent<AudioSource>();
+		//	gibberishAudioSource = 
 		characterName = transform.parent.name;
 		myLine = GetComponentInChildren<VoiceOverLine>();
 	}
