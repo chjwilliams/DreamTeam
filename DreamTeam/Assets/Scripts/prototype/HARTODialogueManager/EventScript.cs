@@ -43,8 +43,8 @@ public class EventScript : MonoBehaviour
 		GameEventsManager.Instance.Fire(new BeginDialogueEvent());
 
 		totalLines = 0;
-		astridLines = 0;
-		npcLines = 0;
+		astridLines = 1;
+		npcLines = 1;
 
 		if (GameObject.Find(characterName))
 		{
@@ -114,12 +114,12 @@ public class EventScript : MonoBehaviour
 			if (response.transform.childCount > 1)
 			{
 				((EmotionalResponseScript)response).PlayEmotionLine(astridHARTO.CurrentEmotion);
-				yield return new WaitForSeconds(response.elapsedSeconds * 2.0f);
+				yield return new WaitForSeconds(response.elapsedSeconds * 1.5f);
 			}
 			else
 			{
 				response.PlayLine();
-				yield return new WaitForSeconds(response.elapsedSeconds * 2.0f);
+				yield return new WaitForSeconds(response.elapsedSeconds * 1.5f);
 			}
 
 			//	Another way to wait until the line is done.

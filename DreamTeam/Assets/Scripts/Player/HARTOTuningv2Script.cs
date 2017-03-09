@@ -23,9 +23,9 @@ public class HARTOTuningv2Script : MonoBehaviour
 	public bool inGoodZone;						//	Checks if we are in good zone
 	public float dialMoveSpeed = 1.0f;			//	How fast the dial moves
 	public KeyCode stopDail = KeyCode.R;	//	Stops dial
-	public GameObject bar;						//	Reference to HARTO tuning bar
-	public GameObject dial;						//	Reference to HARTO tuning dial
-	public GameObject goodZone;					//	Reference to HARTO good zone
+	public GameObject[] bar;						//	Reference to HARTO tuning bar
+	public GameObject[] dial;						//	Reference to HARTO tuning dial
+	public GameObject[] goodZone;					//	Reference to HARTO good zone
 
 
 	/*--------------------------------------------------------------------------------------*/
@@ -42,14 +42,17 @@ public class HARTOTuningv2Script : MonoBehaviour
 
 	void MoveDial()
 	{
-		Vector3 newPosition = dial.transform.localPosition;
-		if (newPosition.x < -0.4f || newPosition.x > 0.3f)
+		for (int i = 0; i < 3; i++)
+		{
+		Vector3 newPosition = dial[i].transform.localPosition;
+		if (Input.GetKeyDown(KeyCode.Z))
 		{
 			dialMoveSpeed *= -1;
 		}
 		newPosition.x -= dialMoveSpeed * Time.deltaTime;
 
-		dial.transform.localPosition = newPosition;
+		dial[i].transform.localPosition = newPosition;
+		}
 
 	}
 	

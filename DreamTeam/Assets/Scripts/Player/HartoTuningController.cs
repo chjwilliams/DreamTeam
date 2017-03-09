@@ -160,13 +160,13 @@ public class HartoTuningController : MonoBehaviour {
 					if (currentfrequency > 135.0f) {
 						currentfrequency = 135.0f;
 					}
-					_transform.localRotation = Quaternion.Euler (0, currentfrequency, 0);
+					_transform.rotation = Quaternion.Euler (currentfrequency, 0, 0);
 				} else if (Input.GetKey (increasefrequency)) {
 					currentfrequency -= frequencyincrement;
 					if (currentfrequency < -135.0f) {
 						currentfrequency = -135.0f;
 					}
-					_transform.localRotation = Quaternion.Euler (0, currentfrequency, 0);
+					_transform.rotation = Quaternion.Euler (currentfrequency, 0, 0);
 				}
 			}
 
