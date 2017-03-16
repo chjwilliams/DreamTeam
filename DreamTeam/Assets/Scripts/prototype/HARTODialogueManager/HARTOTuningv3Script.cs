@@ -20,6 +20,7 @@ public class HARTOTuningv3Script : MonoBehaviour {
 
 	public float rotationSpeed = 20.0f;
 	public float selectionAreaWidth;
+	public Image uiHARTO;
 	public GameObject topicWheel;
 	public GameObject emotionWheel;
 	
@@ -31,6 +32,8 @@ public class HARTOTuningv3Script : MonoBehaviour {
 	public Icon[] topicWheelIcons;
 	public EmotionIcon[] emotionIcons;
 	public Image selectionArea;
+	public Image displayImage;
+	public Image displayIcon;
 	float rotateHARTO;
 
 	[SerializeField]
@@ -51,8 +54,13 @@ public class HARTOTuningv3Script : MonoBehaviour {
 		canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 		topicSelected = false;
 		selectionArea = GameObject.Find("SelectionArea").GetComponent<Image>();
-		selectionAreaWidth = selectionArea.sprite.bounds.extents.x;
+		selectionAreaWidth = selectionArea.sprite.bounds.extents.x * 1.5f;
 		selectionAreaColor = selectionArea.color;
+
+		displayImage = GameObject.Find("DisplayImage").GetComponent<Image>();
+		displayIcon = GameObject.Find("DisplayIcon").GetComponent<Image>();
+
+		uiHARTO = GameObject.Find("HARTOUI").GetComponent<Image>();
 
 		topicWheel = GameObject.Find("TopicWheelUI");
 		topicWheelIcons = topicWheel.GetComponentsInChildren<Icon>();
@@ -68,8 +76,6 @@ public class HARTOTuningv3Script : MonoBehaviour {
 		GameEventsManager.Instance.Register<EndDialogueEvent>(onEndDialogueEvent);
 
 		player = GameObject.Find(ASTRID).GetComponent<FirstPersonController>();
-
-		//StartCoroutine(FadeHARTO());
 	}
 
 
@@ -85,6 +91,9 @@ public class HARTOTuningv3Script : MonoBehaviour {
 
 	void FadeHARTO(float alpha)
 	{
+
+		uiHARTO.color = new Color (uiHARTO.color.r, uiHARTO.color.g, uiHARTO.color.b, alpha);
+
 		for (int i = 0; i < emotionWheelIcons.Length; i++)
 		{
 			if (!emotionWheelIcons[i].selected)
@@ -93,6 +102,14 @@ public class HARTOTuningv3Script : MonoBehaviour {
 																emotionWheelIcons[i].myIcon.color.g,
 																emotionWheelIcons[i].myIcon.color.b,
 																alpha * Icon.alphaLimit);
+			}
+
+			if (!topicSelected)
+			{
+				emotionWheelIcons[i].myIcon.color =  new Color(emotionWheelIcons[i].myIcon.color.r,
+																emotionWheelIcons[i].myIcon.color.g,
+																emotionWheelIcons[i].myIcon.color.b,
+																0 * Icon.alphaLimit);
 			}
 		}
 
@@ -113,20 +130,14 @@ public class HARTOTuningv3Script : MonoBehaviour {
 
 
 		}
-		for (int i = 0; i < canvas.transform.childCount; i++)
-		{
-			canvas.transform.GetChild(i).GetComponent<Image>().color = new Color(canvas.transform.GetChild(i).GetComponent<Image>().color.r,
-			 																		canvas.transform.GetChild(i).GetComponent<Image>().color.g,
-																					canvas.transform.GetChild(i).GetComponent<Image>().color.b,
-																					 alpha);
-			if (topicSelected)
-			{
-				topicWheel.GetComponent<Image>().color = new Color(topicWheel.GetComponent<Image>().color.r,
-			 														topicWheel.GetComponent<Image>().color.g,
-																	topicWheel.GetComponent<Image>().color.b,
-																					 0);
-			}
-		}
+
+		selectionArea.color = new Color(selectionArea.color.r,selectionArea.color.g, selectionArea.color.b, alpha);
+
+		displayImage.color = new Color(displayImage.color.r, displayImage.color.g, displayImage.color.b, alpha);
+
+		displayIcon.color = new Color(displayIcon.color.r, displayIcon.color.g, displayIcon.color.b, alpha);
+
+		
 	}
 	
 	/*--------------------------------------------------------------------------------------*/
@@ -153,6 +164,7 @@ public class HARTOTuningv3Script : MonoBehaviour {
 		Icon[] myIconArray;
 		if (topicHasBeenSelected)
 		{
+			
 			myIconArray = emotionIcons;
 		}
 		else
@@ -163,25 +175,29 @@ public class HARTOTuningv3Script : MonoBehaviour {
 		for (int i = 0; i < myIconArray.Length; i++)
 		{		
 			if (myIconArray[i].transform.position.x < selectionArea.transform.position.x + selectionAreaWidth &&
-				myIconArray[i].transform.position.x > selectionArea.transform.position.x - selectionAreaWidth &&
-				Input.GetKeyDown(KeyCode.Mouse0))
+				myIconArray[i].transform.position.x > selectionArea.transform.position.x - selectionAreaWidth)
 			{
-				if (topicHasBeenSelected)
+				displayIcon.sprite = myIconArray[i].myIcon.sprite;
+				if(Input.GetKeyDown(KeyCode.Mouse0))
 				{
-					currentEmotion = ((EmotionIcon)myIconArray[i]).emotion;
-					myIconArray[i].selected = true;
-					GameEventsManager.Instance.Fire(new EmotionSelectedEvent(this));
-				}
-				else
-				{
-					currentTopic = myIconArray[i];
-					myIconArray[i].selected = true;
-					topicSelected = true;
-					GameEventsManager.Instance.Fire(new TopicSelectedEvent(this, player));
+					if (topicHasBeenSelected)
+					{
+						currentEmotion = ((EmotionIcon)myIconArray[i]).emotion;
+						myIconArray[i].selected = true;
+						GameEventsManager.Instance.Fire(new EmotionSelectedEvent(this));
+					}
+					else
+					{
+						currentTopic = myIconArray[i];
+						myIconArray[i].selected = true;
+						topicSelected = true;
+						GameEventsManager.Instance.Fire(new TopicSelectedEvent(this, player));
+					}
 				}
 			}
 			else
 			{
+				displayIcon.color = transparent;
 				myIconArray[i].myIcon.color = Icon.inactiveColor;
 				myIconArray[i].selected = false;
 			}
@@ -202,10 +218,7 @@ public class HARTOTuningv3Script : MonoBehaviour {
 
 			if (isHARTOActive) 
 			{
-				if (Input.GetKeyDown(KeyCode.Mouse0))
-				{
-					SelectIcon(topicSelected);
-				}
+				SelectIcon(topicSelected);
 
 				rotateHARTO = rotateHARTO +  Input.GetAxis (SCROLLWHEEL) * Time.deltaTime;
 				RotateEmotionWheel(rotateHARTO, topicSelected);

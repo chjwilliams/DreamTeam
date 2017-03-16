@@ -61,9 +61,9 @@ public class GameManager : MonoBehaviour {
 	public BasicNPCController mali;						//	Reference to Mali
 	public GameObject firstPersonCamera;				//	Refernece to  the firstpersoncamera
 	public GameObject thirdPersonCamera;				//	Refernece to  the thirdpersoncamera
-	public GameObject hartoV1GO;
-	public GameObject hartoV2GO;
-	public GameObject hartoV3GO;
+	// public GameObject hartoV1GO;
+	// public GameObject hartoV2GO;
+	// public GameObject hartoV3GO;
 	public GameObject harto;
 
 
@@ -82,18 +82,18 @@ public class GameManager : MonoBehaviour {
 			gm = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager> ();  
 		}
 
-		mali = GameObject.Find ("Mali").GetComponent<BasicNPCController>();
+		mali = GameObject.Find ("NPC_Mali").GetComponent<BasicNPCController>();
 		astrid = GameObject.Find ("Astrid").GetComponent<FirstPersonController> ();
 
 		//initial thirdpersoncamera inactive
 		thirdPersonActive = false;
 		
-		disableInput = false;
+		//disableInput = false;
 
 		harto = GameObject.Find("EmotionWheelUI");
-		hartoV1GO = GameObject.Find("HARTOv1");
-		hartoV2GO = GameObject.Find("HARTOv2");
-		hartoV3GO = GameObject.Find("HARTOv3");
+		// hartoV1GO = GameObject.Find("HARTOv1");
+		// hartoV2GO = GameObject.Find("HARTOv2");
+		// hartoV3GO = GameObject.Find("HARTOv3");
 
 		harto.SetActive(true);
 		// hartoV1GO.SetActive(false);

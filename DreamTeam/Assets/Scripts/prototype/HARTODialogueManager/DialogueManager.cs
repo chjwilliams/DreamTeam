@@ -33,13 +33,16 @@ public class DialogueManager : MonoBehaviour {
 
 	void OnTopicSelected(GameEvent e)
 	{
-		string selectedEvent = EVENT_UTAN_ASTRID_STARTS; //EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.ToString() + EVENT_ASTRID_TALKS_FIRST;
-		Debug.Log(EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.name + EVENT_ASTRID_TALKS_FIRST);
-		Debug.Log(((TopicSelectedEvent)e).player.npcAstridIsTalkingTo.name);
-		InitDialogueEvent(selectedEvent, ((TopicSelectedEvent)e).player.npcAstridIsTalkingTo.name);
+		string selectedEvent = EVENT_UTAN_ASTRID_STARTS;//EVENT_PREFIX + ((TopicSelectedEvent)e).hartoTopic.currentTopic.name + EVENT_ASTRID_TALKS_FIRST;
 
+		if (selectedEvent == EVENT_UTAN_ASTRID_STARTS)
+		{
+		}
+		InitDialogueEvent(selectedEvent, ((TopicSelectedEvent)e).player.npcAstridIsTalkingTo.name);
+		
 		try
 		{
+			
 		}
 		catch (Exception ex)
 		{

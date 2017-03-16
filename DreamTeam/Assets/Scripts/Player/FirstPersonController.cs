@@ -28,7 +28,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
-		[SerializeField] private HartoTuningController m_HARTO;
+		[SerializeField] private HARTOTuningv3Script m_HARTO;
 
         public SphereCollider personalSpace;
         public Collider npcAstridIsTalkingTo;
@@ -60,14 +60,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
             personalSpace = GetComponent<SphereCollider>();
-			//m_HARTO = GameObject.Find ("TemporaryHARTO").GetComponent<HartoTuningController> ();
+			m_HARTO = GameObject.Find ("HARTOUI").GetComponent<HARTOTuningv3Script> ();
         }
 
 
         // Update is called once per frame
         private void Update()
         {
-			if (!GameManager.gm.thirdPersonActive && !GameManager.gm.disableInput) {
+			//if (!GameManager.gm.thirdPersonActive && !GameManager.gm.disableInput) {
 				RotateView ();
 				// the jump state needs to read here to make sure it is not missed
 				if (!m_Jump && !m_IsTalking) {
@@ -83,7 +83,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
 					m_MoveDir.y = 0f;
 				}
-			}
+		    //}
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
         }
@@ -98,7 +98,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-			if (!GameManager.gm.thirdPersonActive &&  !GameManager.gm.disableInput) {
+			//if (!GameManager.gm.thirdPersonActive &&  !GameManager.gm.disableInput) {
 				
 				float speed;
 			
@@ -137,7 +137,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 					UpdateCameraPosition (speed);
 				
 				m_MouseLook.UpdateCursorLock ();
-			}
+			//}
         }
 
 
@@ -249,8 +249,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            if (!GameManager.gm.disableInput)
-            {
+            //if (!GameManager.gm.disableInput)
+            //{
                 Rigidbody body = hit.collider.attachedRigidbody;
               //dont move the rigidbody if the character is on top of it
                 if (m_CollisionFlags == CollisionFlags.Below)
@@ -263,12 +263,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     return;
                 }
                 body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
-            }
+            //}
         }
 
 		private void OnTriggerEnter(Collider other) 
         {
-			if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) 
+			if (other.gameObject.CompareTag ("NPC")) 
             {
                 npcAstridIsTalkingTo = other;
 			}
@@ -276,7 +276,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void OnTriggerExit(Collider other) 
         {
-			if (other.gameObject.CompareTag ("NPC") &&  !GameManager.gm.disableInput) 
+			if (other.gameObject.CompareTag ("NPC")) 
             {
                 npcAstridIsTalkingTo = null;
 			}

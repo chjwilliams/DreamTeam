@@ -7,26 +7,38 @@ public class ResponseScript : MonoBehaviour {
 	[Range(0.0f, 1.0f)]
 	public float volume = 1.0f;
 	
-	public float elapsedSeconds;
+	public float elapsedHARTOSeconds;
+	public float elapsedGibberishSeconds;
 	public VoiceOverLine myLine;
 
 	public AudioSource characterAudioSource;
-	//	public AudioSource gibberishAudioSource;
+	public AudioSource gibberishAudioSource;
 	public string characterName;
+
+	protected const string HARTO = "HARTO";
+	protected const string GIBBERISH = "Gibberish";
 
 	// Use this for initialization
 	protected void Start () 
 	{
-		characterAudioSource = GetComponentInParent<AudioSource>();
-		//	gibberishAudioSource = 
-		characterName = transform.parent.name;
+		characterAudioSource = transform.parent.parent.GetComponent<AudioSource>();
+		gibberishAudioSource = GetComponentInParent<AudioSource>();
+		characterName = transform.parent.parent.name;
 		myLine = GetComponentInChildren<VoiceOverLine>();
 	}
 
-	virtual public void PlayLine()
+	virtual public void PlayLine(string dialogueType)
 	{
-		characterAudioSource.PlayOneShot(myLine.LoadAudioClip(characterName, "HARTO", transform.name), volume);
-		elapsedSeconds = myLine.LoadAudioClip(characterName, "HARTO", transform.name).length;
+		if (dialogueType == HARTO)
+		{
+			characterAudioSource.PlayOneShot(myLine.LoadAudioClip(characterName, dialogueType, transform.name), volume);
+			elapsedHARTOSeconds = myLine.LoadAudioClip(characterName, dialogueType, transform.name).length;
+		}
+		else if (dialogueType == GIBBERISH)
+		{
+			gibberishAudioSource.PlayOneShot(myLine.LoadGibberishAudio(characterName, dialogueType, transform.name), volume);
+			elapsedGibberishSeconds = myLine.LoadGibberishAudio(characterName, dialogueType, transform.name).length;
+		}
 	}
 
 	virtual public void PlayLine(Emotions myEmotion)

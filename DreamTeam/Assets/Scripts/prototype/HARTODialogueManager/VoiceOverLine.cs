@@ -5,12 +5,25 @@ using UnityEngine;
 public class VoiceOverLine : MonoBehaviour 
 {
 	public string voiceOverLine = "";
-	public AudioClip voiceOver;
+	public const string GIBBERISH = "Gibberish";
+	public AudioClip voiceOverGibberish;
+	public AudioClip voiceOverHARTO;
 
 	// Use this for initialization
 	void Start () 
 	{
 	
+	}
+
+	public AudioClip LoadGibberishAudio (string npcName, string dialogueType, string filename, string emotionalResponse)
+	{
+		if (Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + "_" + emotionalResponse) == null)
+		{
+			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + "_" + emotionalResponse + " not found!");
+		}
+
+		voiceOverGibberish = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + "_" + emotionalResponse);
+		return voiceOverGibberish;
 	}
 
 	public AudioClip LoadAudioClip(string npcName, string dialogueType, string filename, string emotionalResponse)
@@ -20,20 +33,30 @@ public class VoiceOverLine : MonoBehaviour
 			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + "_" + emotionalResponse + " not found!");
 		}
 		
-		voiceOver = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + "_" + emotionalResponse);
+		voiceOverHARTO = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + "_" + emotionalResponse);
 
-		return voiceOver;
+		return voiceOverHARTO;
+	}
+
+	public AudioClip LoadGibberishAudio (string npcName, string dialogueType, string filename)
+	{
+		if (Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType) == null)
+		{
+			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + " not found!");
+		}
+
+		voiceOverGibberish = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType);
+		return voiceOverGibberish;
 	}
 	public AudioClip LoadAudioClip(string npcName, string dialogueType, string filename)
 	{
 		if (Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType) == null)
 		{
-			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + " not found!");
+			Debug.Log("Resource Not Found Error: " + "Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType + " not found!");
 		}
 
-		voiceOver = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType);
-
-		return voiceOver;
+		voiceOverHARTO = Resources.Load<AudioClip>("Audio/VO/" + npcName + "/" + dialogueType + "/" + filename + "_" + dialogueType);
+		return voiceOverHARTO;
 	}
 	
 	// Update is called once per frame

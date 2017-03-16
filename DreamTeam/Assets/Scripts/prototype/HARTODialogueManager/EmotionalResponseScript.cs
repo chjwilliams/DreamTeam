@@ -23,14 +23,23 @@ public class EmotionalResponseScript : ResponseScript {
 		return astridHARTO.CurrentEmotion;
 	}
 
-	public void PlayEmotionLine(Emotions emotion)
+	public void PlayEmotionLine(Emotions emotion, string dialogueType)
 	{		
 		for (int i  = 0; i < possibleLines.Length; i++)
 		{
 			if (possibleLines[i].name.Contains(emotion.ToString()))
 			{	
-				characterAudioSource.PlayOneShot(possibleLines[i].LoadAudioClip(characterName, "HARTO", transform.name, emotion.ToString()), volume);
-				elapsedSeconds = myLine.LoadAudioClip(characterName, "HARTO", transform.name, emotion.ToString()).length;
+				if (dialogueType == HARTO)
+				{
+					characterAudioSource.PlayOneShot(possibleLines[i].LoadAudioClip(characterName, dialogueType, transform.name, emotion.ToString()), volume);
+					elapsedHARTOSeconds = possibleLines[i].LoadAudioClip(characterName, dialogueType, transform.name, emotion.ToString()).length;
+				}
+				else if (dialogueType == GIBBERISH)
+				{
+					gibberishAudioSource.PlayOneShot(possibleLines[i].LoadGibberishAudio(characterName, dialogueType, transform.name, emotion.ToString()), volume);
+					elapsedGibberishSeconds = possibleLines[i].LoadGibberishAudio(characterName, dialogueType, transform.name, emotion.ToString()).length;
+				}
+				
 			}
 		}	
 	}

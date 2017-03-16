@@ -11,18 +11,21 @@ public class Icon : MonoBehaviour
 	public static Color inactiveColor;
 	public static Color activeColor;
 
+	public Transform parentWheel;
+
 	protected HARTOTuningv3Script astridHARTO;
 
 	// Use this for initialization
 	protected void Start () 
 	{
 		selected = false;
-		alphaLimit = 0.5f;
+		alphaLimit = 0.8f;
 		myIcon = GetComponent<Image>();	
 		inactiveColor = new Color (1.0f, 1.0f, 1.0f, alphaLimit);
 		activeColor  = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+		parentWheel = transform.parent;
 
-		astridHARTO = GameObject.Find("EmotionWheelUI").GetComponent<HARTOTuningv3Script>();
+		astridHARTO = GameObject.Find("HARTOUI").GetComponent<HARTOTuningv3Script>();
 
 		myIcon.color = inactiveColor;
 	}
@@ -30,6 +33,8 @@ public class Icon : MonoBehaviour
 	// Update is called once per frame
 	protected void Update () 
 	{
+		transform.rotation = Quaternion.Euler(0, 0, parentWheel.localRotation.z * -1);
+
 		if (!astridHARTO.isHARTOActive)
 		{
 			selected = false;
@@ -37,7 +42,7 @@ public class Icon : MonoBehaviour
 		
 		if (myIcon.color.a > alphaLimit && astridHARTO.isHARTOActive)
 		{	
-			myIcon.color = inactiveColor;
+			myIcon.color = activeColor;
 		}
 
 		
